@@ -4,6 +4,10 @@ import SlotMachineVue from './components/slot-machine/SlotMachine.vue';
 
 <template>
     <div>
-        <SlotMachineVue></SlotMachineVue>
+        <header></header>
+        <main>
+            <SlotMachineVue></SlotMachineVue>
+        </main>
+        <footer></footer>
     </div>
 </template>
