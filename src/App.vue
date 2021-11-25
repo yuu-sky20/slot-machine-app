@@ -7,8 +7,3 @@ import SlotMachineVue from './components/slot-machine/SlotMachine.vue';
         <SlotMachineVue></SlotMachineVue>
     </div>
 </template>
-
-<style>
-/* #app {
-} */
-</style>

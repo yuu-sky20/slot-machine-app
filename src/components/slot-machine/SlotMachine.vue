@@ -1,3 +1,4 @@
+<script setup lang="ts">
 // 3つのUIのスロットを回す関数はSetTimeOutでバラして起動する
 
 // scriptには、これらが必要
@@ -10,3 +11,15 @@
 // 結果を表示する
 // もう一度遊ぶボタンを描画する
 // 初期化をする
+
+import SlotVue from './Slot.vue'
+// オイオイオイ idか何かつけないとDOMが識別できねーぞこれｗｗ
+</script>
+
+<template>
+    <div>
+        <SlotVue></SlotVue>
+        <SlotVue></SlotVue>
+        <SlotVue></SlotVue>
+    </div>
+</template>
