@@ -1,0 +1,24 @@
+{
+  "name": "slot-machine-app",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "@types/node-emoji": "^1.8.1",
+    "node-emoji": "^1.11.0",
+    "vue": "^3.2.16"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^1.9.3",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.1",
+    "tailwindcss": "^2.2.19",
+    "typescript": "^4.4.3",
+    "vite": "^2.6.4",
+    "vue-tsc": "^0.3.0"
+  }
+}
