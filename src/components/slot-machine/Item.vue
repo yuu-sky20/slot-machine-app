@@ -8,7 +8,7 @@ const randIndex = Math.floor(Math.random() * emojiItems.length)
 <template>
     <div class="px-2">
         <div class="box-border text-center">
-            <p>{{emojiItems[randIndex]}}</p>
+            <p class="text-5xl">{{emojiItems[randIndex]}}</p>
         </div>
     </div>
 </template>
