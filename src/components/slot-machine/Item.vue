@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // 原型
 // 画像を動的にインポート
-// 親から渡される形にする？あるいはvuexで解決できるならvuexで解決する
+// 親からslotで渡される形にする
 </script>
 
 <template>
