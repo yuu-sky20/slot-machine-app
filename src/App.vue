@@ -3,7 +3,7 @@ import SlotMachineVue from './components/slot-machine/SlotMachine.vue';
 </script>
 
 <template>
-    <div>
+    <div class="container flex flex-col">
         <header></header>
         <main>
             <SlotMachineVue></SlotMachineVue>

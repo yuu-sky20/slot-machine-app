@@ -17,9 +17,9 @@ import SlotVue from './Slot.vue'
 </script>
 
 <template>
-    <div>
-        <SlotVue></SlotVue>
-        <SlotVue></SlotVue>
-        <SlotVue></SlotVue>
+    <div class="flex flex-wrap container">
+        <SlotVue key="left"></SlotVue>
+        <SlotVue key="middle"></SlotVue>
+        <SlotVue key="right"></SlotVue>
     </div>
 </template>

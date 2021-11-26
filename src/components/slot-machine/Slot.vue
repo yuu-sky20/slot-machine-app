@@ -9,11 +9,9 @@ import ItemVue from './Item.vue';
 </script>
 
 <template>
-    <div class="flex">
-        <div class="flex-col">
-            <ItemVue key="a"></ItemVue>
-            <ItemVue key="b"></ItemVue>
-            <ItemVue key="c"></ItemVue>
-        </div>
+    <div class="flex flex-col">
+        <ItemVue key="a"></ItemVue>
+        <ItemVue key="b"></ItemVue>
+        <ItemVue key="c"></ItemVue>
     </div>
 </template>
