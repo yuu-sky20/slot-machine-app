@@ -9,7 +9,7 @@ import ItemVue from './Item.vue';
 </script>
 
 <template>
-    <div class="flex flex-col">
+    <div class="flex flex-col mx-3 justify-center">
         <ItemVue key="a"></ItemVue>
         <ItemVue key="b"></ItemVue>
         <ItemVue key="c"></ItemVue>

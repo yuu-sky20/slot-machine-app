@@ -1,14 +1,14 @@
 <script setup lang="ts">
-// 原型
-// 画像を動的にインポート
-// 親からslotで渡される形にする
-// スタブの方から作っていこー
+// 最終的には親からslotで渡される形にする
+// 乱数はSlotMachineで制御する(Slot3つで同じ値を扱いため)
+import emojiItems from '../../const/emojiItems';
+const randIndex = Math.floor(Math.random() * emojiItems.length)
 </script>
 
 <template>
-    <div class="margin-auto">
-        <div class="box-border">
-            <p>emoji</p>
+    <div class="px-2">
+        <div class="box-border text-center">
+            <p>{{emojiItems[randIndex]}}</p>
         </div>
     </div>
 </template>
