@@ -10,8 +10,8 @@ import ItemVue from './Item.vue';
 
 <template>
     <div class="flex flex-col mx-3 justify-center">
-        <ItemVue key="a"></ItemVue>
-        <ItemVue key="b"></ItemVue>
-        <ItemVue key="c"></ItemVue>
+        <ItemVue key="top"></ItemVue>
+        <ItemVue key="middle"></ItemVue>
+        <ItemVue key="bottom"></ItemVue>
     </div>
 </template>
