@@ -75,7 +75,7 @@ describe("JudgeSlotHorizontalLine()の引数indexNumの境界値テスト", () =
         expect(() => gameManager.JudgeSlotHorizontalLine(3.9)).toThrow("indexNumには必ず自然数を入力してください")
         expect(() => gameManager.JudgeSlotHorizontalLine(12.7834)).toThrow("indexNumには必ず自然数を入力してください")
     })
-    it("indexNumはマイナス値を含まない", () => {
+    it("indexNumは負数を含まない", () => {
         const gameManager = new GameManager()
         expect(() => gameManager.JudgeSlotHorizontalLine(-1)).toThrow("indexNumには必ず自然数を入力してください")
         expect(() => gameManager.JudgeSlotHorizontalLine(-125)).toThrow("indexNumには必ず自然数を入力してください")

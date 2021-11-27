@@ -16,8 +16,8 @@ export class GameManager {
         this.count = 0
     }
     /**
-     * ストップした現在のmiddleスロットアイテムのemojiItems[]添字番号
-     * @param indexNum 
+     * 中央横ラインのスロットアイテムが揃っているか判定する
+     * @param indexNum ストップした現在のmiddleSlotItemのemojiItems[]の添字番号 
      */
     public JudgeSlotHorizontalLine(indexNum: number): void {
         if(!Number.isInteger(indexNum) || Math.sign(indexNum) === -1) throw new TypeError("indexNumには必ず自然数を入力してください")
@@ -27,8 +27,7 @@ export class GameManager {
         this.count++
     }
     /**
-     * ゲームクリア条件を満たしたかどうかをbool値で返す
-     * @returns boolean
+     * @returns ゲームクリア条件を満たしたかどうかをbool値で返す
      */
     public IsGameClear(): boolean {
         return this.isClear
