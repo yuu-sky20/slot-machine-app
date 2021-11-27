@@ -20,8 +20,10 @@ export class GameManager {
      * @param indexNum 
      */
     public JudgeSlotHorizontalLine(indexNum: number): void {
+        if(!Number.isInteger(indexNum) || Math.sign(indexNum) === -1) throw new TypeError("indexNumには必ず自然数を入力してください")
+
         if (this.count === 0) this.firstItemNum = indexNum
-        if (this.firstItemNum === indexNum) this.isClear && true
+        if (this.firstItemNum !== indexNum) this.isClear = false
         this.count++
     }
     /**
