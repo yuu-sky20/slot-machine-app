@@ -1,11 +1,13 @@
 export class GameManager {
     private firstItemNum: number
     private isClear: boolean
-    private count: number
+    private slotStoppedCount: number
+    private gamePlayCount: number
     constructor() {
         this.firstItemNum = 0
         this.isClear = true
-        this.count = 0
+        this.slotStoppedCount = 0
+        this.gamePlayCount = 0
     }
     /**
      * ゲーム設定をリセットする
@@ -13,7 +15,7 @@ export class GameManager {
     public ResetGame(): void {
         this.firstItemNum = 0
         this.isClear = true
-        this.count = 0
+        this.slotStoppedCount = 0
     }
     /**
      * 中央横ラインのスロットアイテムが揃っているか判定する
@@ -22,14 +24,23 @@ export class GameManager {
     public JudgeSlotHorizontalLine(indexNum: number): void {
         if(!Number.isInteger(indexNum) || Math.sign(indexNum) === -1) throw new TypeError("indexNumには必ず自然数を入力してください")
 
-        if (this.count === 0) this.firstItemNum = indexNum
+        if (this.slotStoppedCount === 0) {
+            this.firstItemNum = indexNum
+            this.gamePlayCount++
+        }
         if (this.firstItemNum !== indexNum) this.isClear = false
-        this.count++
+        this.slotStoppedCount++
     }
     /**
      * @returns ゲームクリア条件を満たしたかどうかをbool値で返す
      */
     public IsGameClear(): boolean {
         return this.isClear
+    }
+    /**
+     * @returns ゲームのプレイ回数を返す
+     */
+    public GetGamePlayCount(): number {
+        return this.gamePlayCount
     }
 }

@@ -56,6 +56,7 @@ describe("正常にゲームリセットされるかどうか", () => {
         gameManager.JudgeSlotHorizontalLine(2)
         gameManager.ResetGame()
         expect(gameManager.IsGameClear()).toBeTruthy()
+        expect(gameManager.GetGamePlayCount()).toBe(1)
     })
     it("ゲームリセットされる2", () => {
         const gameManager = new GameManager()
@@ -67,6 +68,7 @@ describe("正常にゲームリセットされるかどうか", () => {
         gameManager.JudgeSlotHorizontalLine(10)
         gameManager.JudgeSlotHorizontalLine(6)
         expect(gameManager.IsGameClear()).toBeFalsy()
+        expect(gameManager.GetGamePlayCount()).toBe(2)
     })
 })
 describe("JudgeSlotHorizontalLine()の引数indexNumの境界値テスト", () => {
