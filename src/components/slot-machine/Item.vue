@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // 最終的には親からslotで渡される形にする
 // 乱数はSlotMachineで制御する(Slot3つで同じ値を扱いため)
-import emojiItems from '../../const/emojiItems';
+import emojiItems from '../../const/emojiItems'
 const randIndex = Math.floor(Math.random() * emojiItems.length)
 </script>
 

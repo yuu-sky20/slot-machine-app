@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ItemVue from './Item.vue';
+import ItemVue from './Item.vue'
 // コンポーネントのTopが画面一番下と当たり判定が被ったとき、一番上のBottomのpositionにテレポートさせる
 // 1個ずつ一番上から一番下へ流す
 // それを3つ用意する 等間隔で
