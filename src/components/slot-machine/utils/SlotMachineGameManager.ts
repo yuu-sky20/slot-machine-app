@@ -12,7 +12,7 @@ export class GameManager {
     /**
      * ゲーム設定をリセットする
      */
-    public ResetGame(): void {
+    public resetGame(): void {
         this.firstItemNum = 0
         this.isClear = true
         this.slotStoppedCount = 0
@@ -21,7 +21,7 @@ export class GameManager {
      * 中央横ラインのスロットアイテムが揃っているか判定する
      * @param indexNum ストップした現在のmiddleSlotItemのemojiItems[]の添字番号 
      */
-    public JudgeSlotHorizontalLine(indexNum: number): void {
+    public judgeSlotHorizontalLine(indexNum: number): void {
         if(!Number.isInteger(indexNum) || Math.sign(indexNum) === -1) throw new TypeError("indexNumには必ず自然数を入力してください")
 
         if (this.slotStoppedCount === 0) {
@@ -34,13 +34,13 @@ export class GameManager {
     /**
      * @returns ゲームクリア条件を満たしたかどうかをbool値で返す
      */
-    public IsGameClear(): boolean {
+    public isGameClear(): boolean {
         return this.isClear
     }
     /**
      * @returns ゲームのプレイ回数を返す
      */
-    public GetGamePlayCount(): number {
+    public getGamePlayCount(): number {
         return this.gamePlayCount
     }
 }

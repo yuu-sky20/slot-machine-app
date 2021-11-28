@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import ItemVue from './Item.vue'
-// コンポーネントのTopが画面一番下と当たり判定が被ったとき、一番上のBottomのpositionにテレポートさせる
-// 1個ずつ一番上から一番下へ流す
-// それを3つ用意する 等間隔で
-// Transition
-// 当たり判定制御、アニメーション、の2つと、新しいアイテム代入する操作が必要
-
+interface Props {
+    indexes: {
+        top: number,
+        middle: number,
+        bottom: number
+    }
+}
+const props = defineProps<Props>()
 </script>
 
 <template>
     <div class="flex flex-col mx-3 justify-center">
-        <ItemVue key="top"></ItemVue>
-        <ItemVue key="middle"></ItemVue>
-        <ItemVue key="bottom"></ItemVue>
+        <ItemVue key="top" :index="indexes.top"></ItemVue>
+        <ItemVue key="middle" :index="indexes.middle"></ItemVue>
+        <ItemVue key="bottom" :index="indexes.bottom"></ItemVue>
     </div>
 </template>
