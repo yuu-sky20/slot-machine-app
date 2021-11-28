@@ -3,7 +3,7 @@ import SlotVue from './Slot.vue'
 import GenerateRandIndexes from './utils/GenerateRandIndexes'
 import LinkedList from './utils/LinkedList'
 import emojiItems from '../../const/emojiItems'
-import { reactive, computed } from '@vue/reactivity'
+import { reactive } from '@vue/reactivity'
 
 type SlotTurnSpeed = {
     leftSpeed: number,
@@ -18,16 +18,16 @@ function GenerateRandSpeed(): number {
 }
 // 初回描画時と初期化時（ゲームリセット時）にのみ実行
 function SetSlotTurnSpeed(): SlotTurnSpeed{
-    let leftSpeed = GenerateRandSpeed()
-    let middleSpeed = GenerateRandSpeed()
-    let rightSpeed = GenerateRandSpeed()
+    const leftSpeed = GenerateRandSpeed()
+    const middleSpeed = GenerateRandSpeed()
+    const rightSpeed = GenerateRandSpeed()
     return {
         leftSpeed: leftSpeed,
         middleSpeed: middleSpeed,
         rightSpeed: rightSpeed
     }
 }
-let slotTurnSpeed: SlotTurnSpeed = SetSlotTurnSpeed()
+const slotTurnSpeed: SlotTurnSpeed = reactive(SetSlotTurnSpeed())
 
 const leftSlotLinkedList = new LinkedList()
 const middleSlotLinkedList = new LinkedList()
@@ -73,7 +73,7 @@ setTimeout(() => {
         middleSlotValues.middle = values[1]
         middleSlotValues.bottom = values[0]
     }, slotTurnSpeed.middleSpeed)
-}, 1500)
+}, 1200)
 setTimeout(() => {
     setInterval(() => {
         rightSlotLinkedList.next()
@@ -82,7 +82,7 @@ setTimeout(() => {
         rightSlotValues.middle = values[1]
         rightSlotValues.bottom = values[0]
     }, slotTurnSpeed.rightSpeed)
-}, 1500)
+}, 2400)
 
 </script>
 
