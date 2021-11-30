@@ -1,6 +1,6 @@
-# Slot-Machine-App
+# Slot Machine App
 ## You can see it here
-- [web app url]
+- [Slot Machine App](https://tender-darwin-23a989.netlify.app/)
 ## What's this ?
 - スロットマシンを回し絵文字を3つ揃えるWebゲームアプリ
 - ゲームを開始すると3つのスロットが同時に回る
