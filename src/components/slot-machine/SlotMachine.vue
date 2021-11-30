@@ -32,26 +32,6 @@ function SetSlotTurnSpeed(): SlotTurnSpeed{
 // 各スロットの回転速度
 const slotTurnSpeed: SlotTurnSpeed = reactive(SetSlotTurnSpeed())
 
-// 縦行のスロットの各アイテムを一元管理するための型
-type SlotItems = {
-    top: number,
-    middle: number,
-    bottom: number
-}
-/**
- * 引数に与えられた3つの数値から、新しいSlotItems型を生成して返す
- * @returns slotItems型を返す
- */
-function ConvertItemValuesIntoSlotItems(itemValues: number[]): SlotItems {
-    if(itemValues[0] == null || itemValues[1] == null || itemValues[2] == null) throw new RangeError("配列引数itemValuesには3つの要素が必要です。")
-    const slotItems: SlotItems = {
-        top: itemValues[0],
-        middle: itemValues[1],
-        bottom: itemValues[2]
-    }
-    return slotItems
-}
-
 // 各スロットアイテムのアイテムを連結リストで管理
 const leftSlotLinkedList = new LinkedList()
 const middleSlotLinkedList = new LinkedList()
@@ -63,13 +43,46 @@ randIndexes.forEach(index => middleSlotLinkedList.push(index))
 randIndexes = GenerateRandIndexes(emojiItems.length)
 randIndexes.forEach(index => rightSlotLinkedList.push(index))
 
+// 縦スロットの各アイテムを一元管理するための型
+type SlotItems = {
+    top: number,
+    middle: number,
+    bottom: number
+}
+/**
+ * 引数に与えられた数列から、新しいSlotItems型を生成し、返す
+ * @param values 新しく生成するslotItemsの各プロパティに代入したい値の数列
+ * @returns slotItems型を返す
+ */
+function InitializeSlotItems(values: number[]): SlotItems {
+    if(values[0] == null || values[1] == null || values[2] == null) throw new RangeError("配列引数valuesには3つの要素が必要です。")
+    const slotItems: SlotItems = {
+        top: values[0],
+        middle: values[1],
+        bottom: values[2]
+    }
+    return slotItems
+}
+
 // 各スロットアイテムの変数の初期化
-const leftSlotInitialValues = leftSlotLinkedList.getThreeConsecutivedNum().reverse()
-const leftSlotItems = reactive(ConvertItemValuesIntoSlotItems(leftSlotInitialValues))
-const middleSlotInitialValues = middleSlotLinkedList.getThreeConsecutivedNum().reverse()
-const middleSlotItems = reactive(ConvertItemValuesIntoSlotItems(middleSlotInitialValues))
-const rightSlotInitialValues = rightSlotLinkedList.getThreeConsecutivedNum().reverse()
-const rightSlotItems = reactive(ConvertItemValuesIntoSlotItems(rightSlotInitialValues))
+const initializedLeftSlotValues = leftSlotLinkedList.getThreeConsecutivedNum().reverse()
+const initializedMiddleSlotValues = middleSlotLinkedList.getThreeConsecutivedNum().reverse()
+const initializedRightSlotValues = rightSlotLinkedList.getThreeConsecutivedNum().reverse()
+const leftSlotItems = reactive(InitializeSlotItems(initializedLeftSlotValues))
+const middleSlotItems = reactive(InitializeSlotItems(initializedMiddleSlotValues))
+const rightSlotItems = reactive(InitializeSlotItems(initializedRightSlotValues))
+
+/**
+ * slotItems型のmutableな変数の各プロパティを代わりに設定する
+ * @param slotItems プロパティに値を設定したいSlotItems型の変数
+ * @param values 第一引数で渡したSlotItems型の変数の各プロパティに代入したい値の数列
+ */
+function SetSlotItems(slotItems: SlotItems, values: number[]): void {
+    if(values[0] == null || values[1] == null || values[2] == null) throw new RangeError("配列引数valuesには3つの要素が必要です。")
+    slotItems.top = values[0]
+    slotItems.middle = values[1]
+    slotItems.bottom = values[2]
+}
 
 // 秒単位で再レンダリングを決定する。
 // TODO 今のままだとストップと再起ができないので後でここは関数にして管理する
@@ -79,26 +92,20 @@ let rightSlotIntervalID: NodeJS.Timer
 leftSlotIntervalID = setInterval(() => {
     leftSlotLinkedList.next()
     const values = leftSlotLinkedList.getThreeConsecutivedNum().reverse()
-    leftSlotItems.top = values[0]
-    leftSlotItems.middle = values[1]
-    leftSlotItems.bottom = values[2]
+    SetSlotItems(leftSlotItems, values)
 }, slotTurnSpeed.leftSpeed)
 setTimeout(() => {
     middleSlotIntervalID = setInterval(() => {
         middleSlotLinkedList.next()
         const values = middleSlotLinkedList.getThreeConsecutivedNum().reverse()
-        middleSlotItems.top = values[0]
-        middleSlotItems.middle = values[1]
-        middleSlotItems.bottom = values[2]
+        SetSlotItems(middleSlotItems, values)
     }, slotTurnSpeed.middleSpeed)
 }, 1200)
 setTimeout(() => {
     rightSlotIntervalID = setInterval(() => {
         rightSlotLinkedList.next()
         const values = rightSlotLinkedList.getThreeConsecutivedNum().reverse()
-        rightSlotItems.top = values[0]
-        rightSlotItems.middle = values[1]
-        rightSlotItems.bottom = values[2]
+        SetSlotItems(rightSlotItems, values)
     }, slotTurnSpeed.rightSpeed)
 }, 2400)
 

@@ -6,14 +6,14 @@ import SlotMachineVue from './components/slot-machine/SlotMachine.vue'
 
 <template>
     <div class="flex flex-col">
-        <Header>
+        <header>
             <HeaderVue></HeaderVue>
-        </Header>
+        </header>
         <main>
             <SlotMachineVue></SlotMachineVue>
         </main>
-        <Footer>
+        <footer>
             <FooterVue></FooterVue>
-        </Footer>
+        </footer>
     </div>
 </template>
