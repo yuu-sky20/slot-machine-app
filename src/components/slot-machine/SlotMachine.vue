@@ -167,11 +167,11 @@ const handleResetTurnSlot = () => {
 
 <template>
     <div class="flex flex-col mx-0">
-        <div class="flex flex-wrap justify-center my-auto container">
+        <div class="flex flex-wrap justify-center my-3 container">
             <div class="flex flex-col">
                 <SlotVue key="left-slot" :indexes="leftSlotItems"></SlotVue>
                 <button
-                class="text-center border-2 m-2"
+                class="text-center border-2 mx-2 my-6"
                 key="stop-left-slot"
                 v-on:click="handleStopLeftSlot"
                 :disabled="isStoppedLeftSlot"
@@ -182,7 +182,7 @@ const handleResetTurnSlot = () => {
             <div class="flex flex-col">
                 <SlotVue key="middle-slot" :indexes="middleSlotItems"></SlotVue>
                 <button
-                class="text-center border-2 m-2"
+                class="text-center border-2 mx-2 my-6"
                 key="stop-middle-slot"
                 v-on:click="handleStopMiddleSlot"
                 :disabled="isStoppedMiddleSlot"
@@ -193,7 +193,7 @@ const handleResetTurnSlot = () => {
             <div class="flex flex-col">
                 <SlotVue key="right-slot" :indexes="rightSlotItems"></SlotVue>
                 <button
-                class="text-center border-2 m-2"
+                class="text-center border-2 mx-2 my-6"
                 key="stop-right-slot"
                 v-on:click="handleStopRightSlot"
                 :disabled="isStoppedRightSlot"
@@ -202,16 +202,16 @@ const handleResetTurnSlot = () => {
                 </button>
             </div>
         </div>
-        <div class="flex justify-center my-auto container">
+        <div class="flex justify-center my-3 container">
             <button
-            class="text-center border-2 m-2"
+            class="text-center border-4 px-10 py-2 bg-red-400 border-red-100"
             v-on:click="handleResetTurnSlot"
             :disabled="!isStoppedAllSlot"
             >
-                <p>Reset</p>
+                <p class="text-white">Reset</p>
             </button>
         </div>
-        <div class="flex flex-col justify-center my-auto container">
+        <div class="flex flex-col justify-center my-3 container">
             <div class="text-center">
                 <p>Game Result: {{isGameCleared}}</p>
             </div>
