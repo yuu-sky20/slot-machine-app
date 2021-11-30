@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import SlotVue from './Slot.vue'
 import GenerateRandIndexes from './utils/GenerateRandIndexes'
+import GameManager from './utils/SlotMachineGameManager'
 import LinkedList from './utils/LinkedList'
 import emojiItems from '../../const/emojiItems'
-import { reactive } from '@vue/reactivity'
+import { reactive, ref, computed } from '@vue/reactivity'
+
+const gameManager = new GameManager()
 
 // 3つのスロットの回転速度を一元管理するための型
 type SlotTurnSpeed = {
@@ -36,7 +39,7 @@ const slotTurnSpeed: SlotTurnSpeed = reactive(SetSlotTurnSpeed())
 const leftSlotLinkedList = new LinkedList()
 const middleSlotLinkedList = new LinkedList()
 const rightSlotLinkedList = new LinkedList()
-
+// 各連結リストを初期化
 let randIndexes = GenerateRandIndexes(emojiItems.length)
 randIndexes.forEach(index => leftSlotLinkedList.push(index))
 randIndexes = GenerateRandIndexes(emojiItems.length)
@@ -86,41 +89,66 @@ function SetSlotItems(slotItems: SlotItems, values: number[]): void {
     slotItems.bottom = values[2]
 }
 
-// 秒単位で再レンダリングを決定する。
-// TODO ゲーム終了後に再起を実装する
-// ゲーム終了はフラグ変数とGameManagerで管理する？
+// IntervalIDの宣言
 let leftSlotIntervalID: NodeJS.Timer
 let middleSlotIntervalID: NodeJS.Timer
 let rightSlotIntervalID: NodeJS.Timer
+// ストップボタンの表示＆非表示を切り替えるためのフラグ変数
+const isStoppedLeftSlot = ref(false)
+const isStoppedMiddleSlot = ref(false)
+const isStoppedRightSlot = ref(false)
 
-leftSlotIntervalID = setInterval(() => {
-    leftSlotLinkedList.next()
-    const values = leftSlotLinkedList.getThreeConsecutivedNum().reverse()
-    SetSlotItems(leftSlotItems, values)
-}, slotTurnSpeed.leftSpeed)
-setTimeout(() => {
-    middleSlotIntervalID = setInterval(() => {
-        middleSlotLinkedList.next()
-        const values = middleSlotLinkedList.getThreeConsecutivedNum().reverse()
-        SetSlotItems(middleSlotItems, values)
-    }, slotTurnSpeed.middleSpeed)
-}, 1200)
-setTimeout(() => {
-    rightSlotIntervalID = setInterval(() => {
-        rightSlotLinkedList.next()
-        const values = rightSlotLinkedList.getThreeConsecutivedNum().reverse()
-        SetSlotItems(rightSlotItems, values)
-    }, slotTurnSpeed.rightSpeed)
-}, 2400)
+/**
+ * 各スロットを回す
+ */
+function StartTurnSlot() {
+    const BASE_WAIT_TIME = 1200
+    setTimeout(() => {
+        leftSlotIntervalID = setInterval(() => {
+            leftSlotLinkedList.next()
+            const values = leftSlotLinkedList.getThreeConsecutivedNum().reverse()
+            SetSlotItems(leftSlotItems, values)
+        }, slotTurnSpeed.leftSpeed)
+        isStoppedLeftSlot.value = false
+    }, BASE_WAIT_TIME * 1)
+    setTimeout(() => {
+        middleSlotIntervalID = setInterval(() => {
+            middleSlotLinkedList.next()
+            const values = middleSlotLinkedList.getThreeConsecutivedNum().reverse()
+            SetSlotItems(middleSlotItems, values)
+        }, slotTurnSpeed.middleSpeed)
+        isStoppedMiddleSlot.value = false
+    }, BASE_WAIT_TIME * 2)
+    setTimeout(() => {
+        rightSlotIntervalID = setInterval(() => {
+            rightSlotLinkedList.next()
+            const values = rightSlotLinkedList.getThreeConsecutivedNum().reverse()
+            SetSlotItems(rightSlotItems, values)
+        }, slotTurnSpeed.rightSpeed)
+        isStoppedRightSlot.value = false
+    }, BASE_WAIT_TIME * 3)
+}
+
+StartTurnSlot()
 
 const handleStopLeftSlot = () => {
     clearInterval(leftSlotIntervalID)
+    isStoppedLeftSlot.value = true
 }
 const handleStopMiddleSlot = () => {
     clearInterval(middleSlotIntervalID)
+    isStoppedMiddleSlot.value = true
 }
 const handleStopRightSlot = () => {
     clearInterval(rightSlotIntervalID)
+    isStoppedRightSlot.value = true
+}
+
+const isStoppedAllSlot = computed(() => 
+    isStoppedLeftSlot.value && isStoppedMiddleSlot.value && isStoppedRightSlot.value
+)
+const handleResetTurnSlot = () => {
+    if(isStoppedAllSlot) StartTurnSlot()
 }
 
 </script>
@@ -130,22 +158,46 @@ const handleStopRightSlot = () => {
         <div class="flex flex-wrap justify-center my-auto container">
             <div class="flex flex-col">
                 <SlotVue key="left-slot" :indexes="leftSlotItems"></SlotVue>
-                <button class="text-center border-2 m-2" key="stop-left-slot" v-on:click="handleStopLeftSlot">
+                <button
+                class="text-center border-2 m-2"
+                key="stop-left-slot"
+                v-on:click="handleStopLeftSlot"
+                :disabled="isStoppedLeftSlot"
+                >
                     <p>Stop!</p>
                 </button>
             </div>
             <div class="flex flex-col">
                 <SlotVue key="middle-slot" :indexes="middleSlotItems"></SlotVue>
-                <button class="text-center border-2 m-2" key="stop-middle-slot" v-on:click="handleStopMiddleSlot">
+                <button
+                class="text-center border-2 m-2"
+                key="stop-middle-slot"
+                v-on:click="handleStopMiddleSlot"
+                :disabled="isStoppedMiddleSlot"
+                >
                     <p>Stop!</p>
                 </button>
             </div>
             <div class="flex flex-col">
                 <SlotVue key="right-slot" :indexes="rightSlotItems"></SlotVue>
-                <button class="text-center border-2 m-2" key="stop-right-slot" v-on:click="handleStopRightSlot">
+                <button
+                class="text-center border-2 m-2"
+                key="stop-right-slot"
+                v-on:click="handleStopRightSlot"
+                :disabled="isStoppedRightSlot"
+                >
                     <p>Stop!</p>
                 </button>
             </div>
+        </div>
+        <div class="flex justify-center my-auto container">
+            <button
+            class="text-center border-2 m-2"
+            v-on:click="handleResetTurnSlot"
+            :disabled="!isStoppedAllSlot"
+            >
+                <p>Reset</p>
+            </button>
         </div>
     </div>
 </template>

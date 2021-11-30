@@ -1,4 +1,4 @@
-import { GameManager } from "./SlotMachineGameManager";
+import GameManager from "./SlotMachineGameManager";
 
 describe("正常にゲームクリアされるか", () => {
     it("ゲームクリアされる1", () => {
@@ -6,14 +6,14 @@ describe("正常にゲームクリアされるか", () => {
         gameManager.judgeSlotHorizontalLine(6)
         gameManager.judgeSlotHorizontalLine(6)
         gameManager.judgeSlotHorizontalLine(6)
-        expect(gameManager.isGameClear()).toBeTruthy()
+        expect(gameManager.isGameCleared()).toBeTruthy()
     })
     it("ゲームクリアされる2", () => {
         const gameManager = new GameManager()
         gameManager.judgeSlotHorizontalLine(0)
         gameManager.judgeSlotHorizontalLine(0)
         gameManager.judgeSlotHorizontalLine(0)
-        expect(gameManager.isGameClear()).toBeTruthy()
+        expect(gameManager.isGameCleared()).toBeTruthy()
     })
     it("ゲームクリアされる3", () => {
         const gameManager = new GameManager()
@@ -22,7 +22,7 @@ describe("正常にゲームクリアされるか", () => {
         gameManager.judgeSlotHorizontalLine(14)
         gameManager.judgeSlotHorizontalLine(14)
         gameManager.judgeSlotHorizontalLine(14)
-        expect(gameManager.isGameClear()).toBeTruthy()
+        expect(gameManager.isGameCleared()).toBeTruthy()
     })
 
     it("ゲームクリアされない1", () => {
@@ -30,14 +30,14 @@ describe("正常にゲームクリアされるか", () => {
         gameManager.judgeSlotHorizontalLine(2)
         gameManager.judgeSlotHorizontalLine(3)
         gameManager.judgeSlotHorizontalLine(2)
-        expect(gameManager.isGameClear()).toBeFalsy()
+        expect(gameManager.isGameCleared()).toBeFalsy()
     })
     it("ゲームクリアされない2", () => {
         const gameManager = new GameManager()
         gameManager.judgeSlotHorizontalLine(5)
         gameManager.judgeSlotHorizontalLine(6)
         gameManager.judgeSlotHorizontalLine(0)
-        expect(gameManager.isGameClear()).toBeFalsy()
+        expect(gameManager.isGameCleared()).toBeFalsy()
     })
     it("ゲームクリアされない3", () => {
         const gameManager = new GameManager()
@@ -45,7 +45,7 @@ describe("正常にゲームクリアされるか", () => {
         gameManager.judgeSlotHorizontalLine(9)
         gameManager.judgeSlotHorizontalLine(9)
         gameManager.judgeSlotHorizontalLine(10)
-        expect(gameManager.isGameClear()).toBeFalsy()
+        expect(gameManager.isGameCleared()).toBeFalsy()
     })
 })
 describe("正常にゲームリセットされるかどうか", () => {
@@ -55,7 +55,7 @@ describe("正常にゲームリセットされるかどうか", () => {
         gameManager.judgeSlotHorizontalLine(3)
         gameManager.judgeSlotHorizontalLine(2)
         gameManager.resetGame()
-        expect(gameManager.isGameClear()).toBeTruthy()
+        expect(gameManager.isGameCleared()).toBeTruthy()
         expect(gameManager.getGamePlayCount()).toBe(1)
     })
     it("ゲームリセットされる2", () => {
@@ -67,7 +67,7 @@ describe("正常にゲームリセットされるかどうか", () => {
         gameManager.judgeSlotHorizontalLine(10)
         gameManager.judgeSlotHorizontalLine(10)
         gameManager.judgeSlotHorizontalLine(6)
-        expect(gameManager.isGameClear()).toBeFalsy()
+        expect(gameManager.isGameCleared()).toBeFalsy()
         expect(gameManager.getGamePlayCount()).toBe(2)
     })
 })
