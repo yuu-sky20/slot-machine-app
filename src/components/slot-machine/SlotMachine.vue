@@ -32,6 +32,26 @@ function SetSlotTurnSpeed(): SlotTurnSpeed{
 // 各スロットの回転速度
 const slotTurnSpeed: SlotTurnSpeed = reactive(SetSlotTurnSpeed())
 
+// 縦行のスロットの各アイテムを一元管理するための型
+type SlotItems = {
+    top: number,
+    middle: number,
+    bottom: number
+}
+/**
+ * 引数に与えられた3つの数値から、新しいSlotItems型を生成して返す
+ * @returns slotItems型を返す
+ */
+function ConvertItemValuesIntoSlotItems(itemValues: number[]): SlotItems {
+    if(itemValues[0] == null || itemValues[1] == null || itemValues[2] == null) throw new RangeError("配列引数itemValuesには3つの要素が必要です。")
+    const slotItems: SlotItems = {
+        top: itemValues[0],
+        middle: itemValues[1],
+        bottom: itemValues[2]
+    }
+    return slotItems
+}
+
 // 各スロットアイテムのアイテムを連結リストで管理
 const leftSlotLinkedList = new LinkedList()
 const middleSlotLinkedList = new LinkedList()
@@ -44,59 +64,67 @@ randIndexes = GenerateRandIndexes(emojiItems.length)
 randIndexes.forEach(index => rightSlotLinkedList.push(index))
 
 // 各スロットアイテムの変数の初期化
-const leftSlotInitialValues = leftSlotLinkedList.getThreeConsecutivedNum()
-const leftSlotItems = reactive({
-    top: leftSlotInitialValues[2],
-    middle: leftSlotInitialValues[1],
-    bottom: leftSlotInitialValues[0]
-})
-const middleSlotInitialValues = middleSlotLinkedList.getThreeConsecutivedNum()
-const middleSlotItems = reactive({
-    top: middleSlotInitialValues[2],
-    middle: middleSlotInitialValues[1],
-    bottom: middleSlotInitialValues[0]
-})
-const rightSlotInitialValues = rightSlotLinkedList.getThreeConsecutivedNum()
-const rightSlotItems = reactive({
-    top: rightSlotInitialValues[2],
-    middle: rightSlotInitialValues[1],
-    bottom: rightSlotInitialValues[0]
-})
+const leftSlotInitialValues = leftSlotLinkedList.getThreeConsecutivedNum().reverse()
+const leftSlotItems = reactive(ConvertItemValuesIntoSlotItems(leftSlotInitialValues))
+const middleSlotInitialValues = middleSlotLinkedList.getThreeConsecutivedNum().reverse()
+const middleSlotItems = reactive(ConvertItemValuesIntoSlotItems(middleSlotInitialValues))
+const rightSlotInitialValues = rightSlotLinkedList.getThreeConsecutivedNum().reverse()
+const rightSlotItems = reactive(ConvertItemValuesIntoSlotItems(rightSlotInitialValues))
 
 // 秒単位で再レンダリングを決定する。
 // TODO 今のままだとストップと再起ができないので後でここは関数にして管理する
-setInterval(() => {
+let leftSlotIntervalID: NodeJS.Timer
+let middleSlotIntervalID: NodeJS.Timer
+let rightSlotIntervalID: NodeJS.Timer
+leftSlotIntervalID = setInterval(() => {
     leftSlotLinkedList.next()
-    const values = leftSlotLinkedList.getThreeConsecutivedNum()
-    leftSlotItems.top = values[2]
+    const values = leftSlotLinkedList.getThreeConsecutivedNum().reverse()
+    leftSlotItems.top = values[0]
     leftSlotItems.middle = values[1]
-    leftSlotItems.bottom = values[0]
+    leftSlotItems.bottom = values[2]
 }, slotTurnSpeed.leftSpeed)
 setTimeout(() => {
-    setInterval(() => {
+    middleSlotIntervalID = setInterval(() => {
         middleSlotLinkedList.next()
-        const values = middleSlotLinkedList.getThreeConsecutivedNum()
-        middleSlotItems.top = values[2]
+        const values = middleSlotLinkedList.getThreeConsecutivedNum().reverse()
+        middleSlotItems.top = values[0]
         middleSlotItems.middle = values[1]
-        middleSlotItems.bottom = values[0]
+        middleSlotItems.bottom = values[2]
     }, slotTurnSpeed.middleSpeed)
 }, 1200)
 setTimeout(() => {
-    setInterval(() => {
+    rightSlotIntervalID = setInterval(() => {
         rightSlotLinkedList.next()
-        const values = rightSlotLinkedList.getThreeConsecutivedNum()
-        rightSlotItems.top = values[2]
+        const values = rightSlotLinkedList.getThreeConsecutivedNum().reverse()
+        rightSlotItems.top = values[0]
         rightSlotItems.middle = values[1]
-        rightSlotItems.bottom = values[0]
+        rightSlotItems.bottom = values[2]
     }, slotTurnSpeed.rightSpeed)
 }, 2400)
+
+const handleStopLeftSlot = () => {
+    clearInterval(leftSlotIntervalID)
+}
+const handleStopMiddleSlot = () => {
+    clearInterval(middleSlotIntervalID)
+}
+const handleStopRightSlot = () => {
+    clearInterval(rightSlotIntervalID)
+}
 
 </script>
 
 <template>
-    <div class="flex flex-wrap justify-center mx-0 my-auto container">
-        <SlotVue key="left-slot" :indexes="leftSlotItems"></SlotVue>
-        <SlotVue key="middle-slot" :indexes="middleSlotItems"></SlotVue>
-        <SlotVue key="right-slot" :indexes="rightSlotItems"></SlotVue>
+    <div>
+        <div class="flex flex-wrap justify-center mx-0 my-auto container">
+            <SlotVue key="left-slot" :indexes="leftSlotItems"></SlotVue>
+            <SlotVue key="middle-slot" :indexes="middleSlotItems"></SlotVue>
+            <SlotVue key="right-slot" :indexes="rightSlotItems"></SlotVue>
+        </div>
+        <div>
+            <button key="stop-left-slot" v-on:click="handleStopLeftSlot">Stop!</button>
+            <button key="stop-middle-slot" v-on:click="handleStopMiddleSlot">Stop!</button>
+            <button key="stop-right-slot" v-on:click="handleStopRightSlot">Stop!</button>
+        </div>
     </div>
 </template>
