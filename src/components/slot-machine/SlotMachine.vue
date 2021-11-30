@@ -8,6 +8,9 @@ import { reactive, ref, computed } from '@vue/reactivity'
 
 const gameManager = new GameManager()
 
+const gamePlayCount = ref(0)
+const isGameCleared = ref(false)
+
 // 3つのスロットの回転速度を一元管理するための型
 type SlotTurnSpeed = {
     leftSpeed: number,
@@ -127,6 +130,7 @@ function StartTurnSlot() {
         }, slotTurnSpeed.rightSpeed)
         isStoppedRightSlot.value = false
     }, BASE_WAIT_TIME * 3)
+    gamePlayCount.value++
 }
 
 StartTurnSlot()
@@ -134,22 +138,30 @@ StartTurnSlot()
 const handleStopLeftSlot = () => {
     clearInterval(leftSlotIntervalID)
     isStoppedLeftSlot.value = true
+    gameManager.judgeSlotHorizontalLine(leftSlotItems.middle)
 }
 const handleStopMiddleSlot = () => {
     clearInterval(middleSlotIntervalID)
     isStoppedMiddleSlot.value = true
+    gameManager.judgeSlotHorizontalLine(middleSlotItems.middle)
 }
 const handleStopRightSlot = () => {
     clearInterval(rightSlotIntervalID)
     isStoppedRightSlot.value = true
+    gameManager.judgeSlotHorizontalLine(rightSlotItems.middle)
 }
 
-const isStoppedAllSlot = computed(() => 
-    isStoppedLeftSlot.value && isStoppedMiddleSlot.value && isStoppedRightSlot.value
-)
+const isStoppedAllSlot = computed(() => {
+    isGameCleared.value = gameManager.isGameCleared()
+    return isStoppedLeftSlot.value && isStoppedMiddleSlot.value && isStoppedRightSlot.value
+})
 const handleResetTurnSlot = () => {
-    if(isStoppedAllSlot) StartTurnSlot()
+    if(isStoppedAllSlot) {
+        StartTurnSlot()
+        gameManager.resetGame()
+    }
 }
+
 
 </script>
 
@@ -198,6 +210,14 @@ const handleResetTurnSlot = () => {
             >
                 <p>Reset</p>
             </button>
+        </div>
+        <div class="flex flex-col justify-center my-auto container">
+            <div class="text-center">
+                <p>Game Result: {{isGameCleared}}</p>
+            </div>
+            <div class="text-center">
+                <p>Play Count: {{gamePlayCount}}</p>
+            </div>
         </div>
     </div>
 </template>
