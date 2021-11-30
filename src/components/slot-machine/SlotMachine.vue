@@ -36,6 +36,7 @@ const slotTurnSpeed: SlotTurnSpeed = reactive(SetSlotTurnSpeed())
 const leftSlotLinkedList = new LinkedList()
 const middleSlotLinkedList = new LinkedList()
 const rightSlotLinkedList = new LinkedList()
+
 let randIndexes = GenerateRandIndexes(emojiItems.length)
 randIndexes.forEach(index => leftSlotLinkedList.push(index))
 randIndexes = GenerateRandIndexes(emojiItems.length)
@@ -51,7 +52,7 @@ type SlotItems = {
 }
 /**
  * 引数に与えられた数列から、新しいSlotItems型を生成し、返す
- * @param values 新しく生成するslotItemsの各プロパティに代入したい値の数列
+ * @param values 新しく生成するslotItemsの各プロパティに代入したい数値の配列
  * @returns slotItems型を返す
  */
 function InitializeSlotItems(values: number[]): SlotItems {
@@ -68,14 +69,15 @@ function InitializeSlotItems(values: number[]): SlotItems {
 const initializedLeftSlotValues = leftSlotLinkedList.getThreeConsecutivedNum().reverse()
 const initializedMiddleSlotValues = middleSlotLinkedList.getThreeConsecutivedNum().reverse()
 const initializedRightSlotValues = rightSlotLinkedList.getThreeConsecutivedNum().reverse()
+
 const leftSlotItems = reactive(InitializeSlotItems(initializedLeftSlotValues))
 const middleSlotItems = reactive(InitializeSlotItems(initializedMiddleSlotValues))
 const rightSlotItems = reactive(InitializeSlotItems(initializedRightSlotValues))
 
 /**
- * slotItems型のmutableな変数の各プロパティを代わりに設定する
- * @param slotItems プロパティに値を設定したいSlotItems型の変数
- * @param values 第一引数で渡したSlotItems型の変数の各プロパティに代入したい値の数列
+ * slotItems型のmutable変数の各プロパティに数値を設定する
+ * @param slotItems プロパティをセットしたいSlotItems型の変数
+ * @param values 各プロパティに代入したい数値の配列
  */
 function SetSlotItems(slotItems: SlotItems, values: number[]): void {
     if(values[0] == null || values[1] == null || values[2] == null) throw new RangeError("配列引数valuesには3つの要素が必要です。")
@@ -85,10 +87,12 @@ function SetSlotItems(slotItems: SlotItems, values: number[]): void {
 }
 
 // 秒単位で再レンダリングを決定する。
-// TODO 今のままだとストップと再起ができないので後でここは関数にして管理する
+// TODO ゲーム終了後に再起を実装する
+// ゲーム終了はフラグ変数とGameManagerで管理する？
 let leftSlotIntervalID: NodeJS.Timer
 let middleSlotIntervalID: NodeJS.Timer
 let rightSlotIntervalID: NodeJS.Timer
+
 leftSlotIntervalID = setInterval(() => {
     leftSlotLinkedList.next()
     const values = leftSlotLinkedList.getThreeConsecutivedNum().reverse()
@@ -122,16 +126,26 @@ const handleStopRightSlot = () => {
 </script>
 
 <template>
-    <div>
-        <div class="flex flex-wrap justify-center mx-0 my-auto container">
-            <SlotVue key="left-slot" :indexes="leftSlotItems"></SlotVue>
-            <SlotVue key="middle-slot" :indexes="middleSlotItems"></SlotVue>
-            <SlotVue key="right-slot" :indexes="rightSlotItems"></SlotVue>
-        </div>
-        <div>
-            <button key="stop-left-slot" v-on:click="handleStopLeftSlot">Stop!</button>
-            <button key="stop-middle-slot" v-on:click="handleStopMiddleSlot">Stop!</button>
-            <button key="stop-right-slot" v-on:click="handleStopRightSlot">Stop!</button>
+    <div class="flex flex-col mx-0">
+        <div class="flex flex-wrap justify-center my-auto container">
+            <div class="flex flex-col">
+                <SlotVue key="left-slot" :indexes="leftSlotItems"></SlotVue>
+                <button class="text-center border-2 m-2" key="stop-left-slot" v-on:click="handleStopLeftSlot">
+                    <p>Stop!</p>
+                </button>
+            </div>
+            <div class="flex flex-col">
+                <SlotVue key="middle-slot" :indexes="middleSlotItems"></SlotVue>
+                <button class="text-center border-2 m-2" key="stop-middle-slot" v-on:click="handleStopMiddleSlot">
+                    <p>Stop!</p>
+                </button>
+            </div>
+            <div class="flex flex-col">
+                <SlotVue key="right-slot" :indexes="rightSlotItems"></SlotVue>
+                <button class="text-center border-2 m-2" key="stop-right-slot" v-on:click="handleStopRightSlot">
+                    <p>Stop!</p>
+                </button>
+            </div>
         </div>
     </div>
 </template>
