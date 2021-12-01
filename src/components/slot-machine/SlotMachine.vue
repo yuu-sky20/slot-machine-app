@@ -9,6 +9,7 @@ import { reactive, ref, computed } from '@vue/reactivity'
 const gameManager = new GameManager()
 
 const gamePlayCount = ref(0)
+const isSlotReachNow = ref(false)
 const isGameCleared = ref(false)
 
 // 3つのスロットの回転速度を一元管理するための型
@@ -138,17 +139,17 @@ StartTurnSlot()
 const handleStopLeftSlot = () => {
     clearInterval(leftSlotIntervalID)
     isStoppedLeftSlot.value = true
-    gameManager.judgeSlotHorizontalLine(leftSlotItems.middle)
+    isSlotReachNow.value = gameManager.judgeSlotHorizontalLine(leftSlotItems.middle)
 }
 const handleStopMiddleSlot = () => {
     clearInterval(middleSlotIntervalID)
     isStoppedMiddleSlot.value = true
-    gameManager.judgeSlotHorizontalLine(middleSlotItems.middle)
+    isSlotReachNow.value = gameManager.judgeSlotHorizontalLine(middleSlotItems.middle)
 }
 const handleStopRightSlot = () => {
     clearInterval(rightSlotIntervalID)
     isStoppedRightSlot.value = true
-    gameManager.judgeSlotHorizontalLine(rightSlotItems.middle)
+    isSlotReachNow.value = gameManager.judgeSlotHorizontalLine(rightSlotItems.middle)
 }
 
 const isStoppedAllSlot = computed(() => {
@@ -158,6 +159,8 @@ const isStoppedAllSlot = computed(() => {
 const handleResetTurnSlot = () => {
     if(isStoppedAllSlot) {
         StartTurnSlot()
+        isSlotReachNow.value = false
+        isGameCleared.value = false
         gameManager.resetGame()
     }
 }
@@ -208,12 +211,15 @@ const handleResetTurnSlot = () => {
             v-on:click="handleResetTurnSlot"
             :disabled="!isStoppedAllSlot"
             >
-                <p class="text-white">Reset</p>
+                <p class="text-white">Retry</p>
             </button>
         </div>
         <div class="flex flex-col justify-center my-3 container">
             <div class="text-center">
                 <p>Game Result: {{isGameCleared}}</p>
+            </div>
+            <div class="text-center">
+                <p>is Slot Reach Now?: {{isSlotReachNow}}</p>
             </div>
             <div class="text-center">
                 <p>Play Count: {{gamePlayCount}}</p>
