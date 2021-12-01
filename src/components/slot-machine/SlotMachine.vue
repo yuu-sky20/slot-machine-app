@@ -186,7 +186,7 @@ const handleResetTurnSlot = () => {
 </script>
 
 <template>
-    <div class="flex flex-col mx-0">
+    <div class="flex flex-col mx-0 my-4">
         <div class="flex justify-center container">
             <div class="text-center">
                 <p>PLAY COUNT: {{gamePlayCount}}</p>
