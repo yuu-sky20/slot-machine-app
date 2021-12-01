@@ -12,8 +12,8 @@ const props = defineProps<Props>()
 
 <template>
     <div class="flex flex-col justify-center">
-        <ItemVue key="top" :index="indexes.top" class="my-2"></ItemVue>
+        <ItemVue key="top" :index="indexes.top" class="my-2 bg-gray-100"></ItemVue>
         <ItemVue key="middle" :index="indexes.middle" class="my-2 px-5 bg-yellow-100"></ItemVue>
-        <ItemVue key="bottom" :index="indexes.bottom" class="my-2"></ItemVue>
+        <ItemVue key="bottom" :index="indexes.bottom" class="my-2 bg-gray-100"></ItemVue>
     </div>
 </template>
