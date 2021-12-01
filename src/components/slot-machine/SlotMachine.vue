@@ -195,7 +195,7 @@ const handleResetTurnSlot = () => {
         <div class="flex justify-center my-3 container">
             <div class="border-2 border-indigo-100">
                 <select
-                    class="text-center"
+                    class="text-center focus:outline-none"
                     :disabled="!(isStoppedAllSlot && isStartedFinalSlotRoll)"
                 >
                     <option v-for="(_, difficulty) in Difficulty">{{difficulty}}</option>
