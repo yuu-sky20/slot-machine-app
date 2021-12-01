@@ -192,6 +192,16 @@ const handleResetTurnSlot = () => {
                 <p>PLAY COUNT: {{gamePlayCount}}</p>
             </div>
         </div>
+        <div class="flex justify-center my-3 container">
+            <div class="border-2 border-indigo-100">
+                <select
+                    class="text-center"
+                    :disabled="!isStoppedAllSlot && !isStartedFinalSlotRoll"
+                >
+                    <option v-for="(_, difficulty) in Difficulty">{{difficulty}}</option>
+                </select>
+            </div>
+        </div>
         <div class="flex flex-wrap justify-center my-3 container">
             <div class="flex flex-col">
                 <SlotVue key="left-slot" :indexes="leftSlotItems"></SlotVue>
@@ -246,16 +256,6 @@ const handleResetTurnSlot = () => {
             </div>
             <div class="text-center">
                 <p v-if="isSlotReachNow">REACH NOW!</p>
-            </div>
-        </div>
-        <div class="flex justify-center my-3 container">
-            <div class="border-2 border-indigo-100">
-                <select
-                    class="text-center"
-                    v-if="isStoppedAllSlot && isStartedFinalSlotRoll"
-                >
-                    <option v-for="(_, difficulty) in Difficulty">{{difficulty}}</option>
-                </select>
             </div>
         </div>
     </div>
