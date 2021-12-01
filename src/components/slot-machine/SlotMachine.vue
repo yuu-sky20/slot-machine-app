@@ -237,13 +237,13 @@ const handleResetTurnSlot = () => {
         </div>
         <div class="flex flex-col justify-center my-3 container">
             <div class="text-center">
+                <p>PLAY COUNT: {{gamePlayCount}}</p>
+            </div>
+            <div class="text-center">
                 <p v-if="isGameCleared">BIG!!!</p>
             </div>
             <div class="text-center">
                 <p v-if="isSlotReachNow">REACH NOW!</p>
-            </div>
-            <div class="text-center">
-                <p>PLAY COUNT: {{gamePlayCount}}</p>
             </div>
         </div>
         <div class="flex justify-center my-3 container">
