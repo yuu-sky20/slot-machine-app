@@ -5,12 +5,14 @@ import GameManager from './utils/SlotMachineGameManager'
 import LinkedList from './utils/LinkedList'
 import emojiItems from '../../const/emojiItems'
 import { reactive, ref, computed } from '@vue/reactivity'
+import { watch } from '@vue/runtime-core'
 
 const gameManager = new GameManager()
 
 const gamePlayCount = ref(0)
 const isSlotReachNow = ref(false)
 const isGameCleared = ref(false)
+const isOnceCalledReset = ref(false)
 
 // 3つのスロットの回転速度を一元管理するための型
 type SlotTurnSpeed = {
@@ -153,11 +155,18 @@ const handleStopRightSlot = () => {
 }
 
 const isStoppedAllSlot = computed(() => {
-    isGameCleared.value = gameManager.isGameCleared()
     return isStoppedLeftSlot.value && isStoppedMiddleSlot.value && isStoppedRightSlot.value
 })
-const handleResetTurnSlot = () => {
+watch(isStoppedAllSlot, isStoppedAllSlot => {
     if(isStoppedAllSlot) {
+        isOnceCalledReset.value = false
+        isGameCleared.value = gameManager.isGameCleared()
+    }
+})
+const handleResetTurnSlot = () => {
+    if(isOnceCalledReset.value) return
+    else if(isStoppedAllSlot) {
+        isOnceCalledReset.value = true
         StartTurnSlot()
         isSlotReachNow.value = false
         isGameCleared.value = false
@@ -209,20 +218,21 @@ const handleResetTurnSlot = () => {
             <button
             class="text-center border-4 px-10 py-2 bg-red-400 border-red-100"
             v-on:click="handleResetTurnSlot"
+            v-if="isStoppedAllSlot"
             :disabled="!isStoppedAllSlot"
             >
-                <p class="text-white">Retry</p>
+                <p class="text-white">REPLAY</p>
             </button>
         </div>
         <div class="flex flex-col justify-center my-3 container">
             <div class="text-center">
-                <p>Game Result: {{isGameCleared}}</p>
+                <p v-if="isGameCleared">BIG!!!</p>
             </div>
             <div class="text-center">
-                <p>is Slot Reach Now?: {{isSlotReachNow}}</p>
+                <p v-if="isSlotReachNow">REACH NOW!</p>
             </div>
             <div class="text-center">
-                <p>Play Count: {{gamePlayCount}}</p>
+                <p>PLAY COUNT: {{gamePlayCount}}</p>
             </div>
         </div>
     </div>
