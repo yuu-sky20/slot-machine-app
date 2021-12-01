@@ -4,6 +4,7 @@ import GenerateRandIndexes from './utils/GenerateRandIndexes'
 import GameManager from './utils/SlotMachineGameManager'
 import LinkedList from './utils/LinkedList'
 import emojiItems from '../../const/emojiItems'
+import Difficulty from '../../const/baseRollSpeeds'
 import { reactive, ref, computed } from '@vue/reactivity'
 import { watch } from '@vue/runtime-core'
 
@@ -13,6 +14,7 @@ const gamePlayCount = ref(0)
 const isSlotReachNow = ref(false)
 const isGameCleared = ref(false)
 const isOnceCalledReset = ref(false)
+const isStartedFinalSlotRoll = ref(false)
 
 // 3つのスロットの回転速度を一元管理するための型
 type SlotTurnSpeed = {
@@ -133,6 +135,10 @@ function StartTurnSlot() {
             SetSlotItems(rightSlotItems, values)
         }, slotTurnSpeed.rightSpeed)
         isStoppedRightSlot.value = false
+        // 反映を少し遅らせる
+        setTimeout(() => 
+            isStartedFinalSlotRoll.value = true
+        , 1000)
     }, BASE_WAIT_TIME * 3)
     gamePlayCount.value++
 }
@@ -140,19 +146,16 @@ function StartTurnSlot() {
 StartTurnSlot()
 
 const handleStopLeftSlot = () => {
-    if(!isStoppedLeftSlot.value) return
     clearInterval(leftSlotIntervalID)
     isStoppedLeftSlot.value = true
     isSlotReachNow.value = gameManager.judgeSlotHorizontalLine(leftSlotItems.middle)
 }
 const handleStopMiddleSlot = () => {
-    if(!isStoppedMiddleSlot.value) return
     clearInterval(middleSlotIntervalID)
     isStoppedMiddleSlot.value = true
     isSlotReachNow.value = gameManager.judgeSlotHorizontalLine(middleSlotItems.middle)
 }
 const handleStopRightSlot = () => {
-    if(!isStoppedRightSlot.value) return
     clearInterval(rightSlotIntervalID)
     isStoppedRightSlot.value = true
     isSlotReachNow.value = gameManager.judgeSlotHorizontalLine(rightSlotItems.middle)
@@ -171,10 +174,11 @@ const handleResetTurnSlot = () => {
     if(isOnceCalledReset.value) return
     else if(isStoppedAllSlot) {
         isOnceCalledReset.value = true
-        StartTurnSlot()
+        isStartedFinalSlotRoll.value = false
         isSlotReachNow.value = false
         isGameCleared.value = false
         gameManager.resetGame()
+        StartTurnSlot()
     }
 }
 
@@ -187,43 +191,46 @@ const handleResetTurnSlot = () => {
             <div class="flex flex-col">
                 <SlotVue key="left-slot" :indexes="leftSlotItems"></SlotVue>
                 <button
-                class="text-center border-2 mx-2 my-6"
-                key="stop-left-slot"
-                v-on:click="handleStopLeftSlot"
-                :disabled="isStoppedLeftSlot"
+                    class="text-center border-2 mx-2 my-6 rounded-lg"
+                    key="stop-left-slot"
+                    v-on:click="handleStopLeftSlot"
+                    v-if="isStartedFinalSlotRoll"
+                    :disabled="isStoppedLeftSlot && !isStartedFinalSlotRoll"
                 >
-                    <p>Stop!</p>
+                    <p>Stop</p>
                 </button>
             </div>
             <div class="flex flex-col">
                 <SlotVue key="middle-slot" :indexes="middleSlotItems"></SlotVue>
                 <button
-                class="text-center border-2 mx-2 my-6"
-                key="stop-middle-slot"
-                v-on:click="handleStopMiddleSlot"
-                :disabled="isStoppedMiddleSlot"
+                    class="text-center border-2 mx-2 my-6 rounded-lg"
+                    key="stop-middle-slot"
+                    v-on:click="handleStopMiddleSlot"
+                    v-if="isStartedFinalSlotRoll"
+                    :disabled="isStoppedMiddleSlot && !isStartedFinalSlotRoll"
                 >
-                    <p>Stop!</p>
+                    <p>Stop</p>
                 </button>
             </div>
             <div class="flex flex-col">
                 <SlotVue key="right-slot" :indexes="rightSlotItems"></SlotVue>
                 <button
-                class="text-center border-2 mx-2 my-6"
-                key="stop-right-slot"
-                v-on:click="handleStopRightSlot"
-                :disabled="isStoppedRightSlot"
+                    class="text-center border-2 mx-2 my-6 rounded-lg"
+                    key="stop-right-slot"
+                    v-on:click="handleStopRightSlot"
+                    v-if="isStartedFinalSlotRoll"
+                    :disabled="isStoppedRightSlot && !isStartedFinalSlotRoll"
                 >
-                    <p>Stop!</p>
+                    <p>Stop</p>
                 </button>
             </div>
         </div>
         <div class="flex justify-center my-3 container">
             <button
-            class="text-center border-4 px-10 py-2 bg-red-400 border-red-100"
-            v-on:click="handleResetTurnSlot"
-            v-if="isStoppedAllSlot"
-            :disabled="!isStoppedAllSlot"
+                class="text-center border-4 px-10 py-2 bg-red-400 border-red-100"
+                v-on:click="handleResetTurnSlot"
+                v-if="isStoppedAllSlot && isStartedFinalSlotRoll"
+                :disabled="!isStoppedAllSlot && !isStartedFinalSlotRoll"
             >
                 <p class="text-white">REPLAY</p>
             </button>
@@ -237,6 +244,16 @@ const handleResetTurnSlot = () => {
             </div>
             <div class="text-center">
                 <p>PLAY COUNT: {{gamePlayCount}}</p>
+            </div>
+        </div>
+        <div class="flex justify-center my-3 container">
+            <div class="border-2 border-indigo-100">
+                <select
+                    class="text-center"
+                    v-if="isStoppedAllSlot && isStartedFinalSlotRoll"
+                >
+                    <option v-for="(_, difficulty) in Difficulty">{{difficulty}}</option>
+                </select>
             </div>
         </div>
     </div>
