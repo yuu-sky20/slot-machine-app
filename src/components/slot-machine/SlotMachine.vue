@@ -202,11 +202,11 @@ const handleResetTurnSlot = () => {
                 </select>
             </div>
         </div>
-        <div class="flex flex-wrap justify-center my-3 container">
+        <div class="flex flex-wrap justify-center my-2 container">
             <div class="flex flex-col">
                 <SlotVue key="left-slot" :indexes="leftSlotItems"></SlotVue>
                 <button
-                    class="text-center border-2 mx-2 my-6 rounded-lg"
+                    class="text-center border-2 mx-2 mt-6 mb-3 rounded-lg"
                     key="stop-left-slot"
                     v-on:click="handleStopLeftSlot"
                     v-if="isStartedFinalSlotRoll"
@@ -218,7 +218,7 @@ const handleResetTurnSlot = () => {
             <div class="flex flex-col">
                 <SlotVue key="middle-slot" :indexes="middleSlotItems"></SlotVue>
                 <button
-                    class="text-center border-2 mx-2 my-6 rounded-lg"
+                    class="text-center border-2 mx-2 mt-6 mb-3 rounded-lg"
                     key="stop-middle-slot"
                     v-on:click="handleStopMiddleSlot"
                     v-if="isStartedFinalSlotRoll"
@@ -230,7 +230,7 @@ const handleResetTurnSlot = () => {
             <div class="flex flex-col">
                 <SlotVue key="right-slot" :indexes="rightSlotItems"></SlotVue>
                 <button
-                    class="text-center border-2 mx-2 my-6 rounded-lg"
+                    class="text-center border-2 mx-2 mt-6 mb-3 rounded-lg"
                     key="stop-right-slot"
                     v-on:click="handleStopRightSlot"
                     v-if="isStartedFinalSlotRoll"
@@ -238,6 +238,20 @@ const handleResetTurnSlot = () => {
                 >
                     <p>Stop</p>
                 </button>
+            </div>
+        </div>
+        <div class="flex flex-col justify-center my-2 container">
+            <div class="text-center">
+                <p
+                    v-if="isGameCleared"
+                    class="font-black text-4xl font-serif"
+                >BIG!</p>
+            </div>
+            <div class="text-center">
+                <p
+                    v-if="isSlotReachNow"
+                    class="font-light text-3xl font-serif"
+                >Reach!</p>
             </div>
         </div>
         <div class="flex justify-center my-3 container">
@@ -249,14 +263,6 @@ const handleResetTurnSlot = () => {
             >
                 <p class="text-white">REPLAY</p>
             </button>
-        </div>
-        <div class="flex flex-col justify-center my-3 container">
-            <div class="text-center">
-                <p v-if="isGameCleared">BIG!!!</p>
-            </div>
-            <div class="text-center">
-                <p v-if="isSlotReachNow">REACH NOW!</p>
-            </div>
         </div>
     </div>
 </template>
