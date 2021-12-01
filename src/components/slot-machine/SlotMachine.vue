@@ -186,7 +186,7 @@ const handleResetTurnSlot = () => {
 </script>
 
 <template>
-    <div class="flex flex-col mx-0 my-20">
+    <div class="flex flex-col mx-0 mb-20 my-10">
         <div class="flex justify-center container">
             <div class="text-center">
                 <p>PLAY COUNT: {{gamePlayCount}}</p>
@@ -196,7 +196,7 @@ const handleResetTurnSlot = () => {
             <div class="border-2 border-indigo-100">
                 <select
                     class="text-center"
-                    :disabled="!isStoppedAllSlot && !isStartedFinalSlotRoll"
+                    :disabled="!(isStoppedAllSlot && isStartedFinalSlotRoll)"
                 >
                     <option v-for="(_, difficulty) in Difficulty">{{difficulty}}</option>
                 </select>
@@ -259,7 +259,7 @@ const handleResetTurnSlot = () => {
                 class="text-center border-4 px-10 py-2 bg-red-400 border-red-100"
                 v-on:click="handleResetTurnSlot"
                 v-if="isStoppedAllSlot && isStartedFinalSlotRoll"
-                :disabled="!isStoppedAllSlot && !isStartedFinalSlotRoll"
+                :disabled="!(isStoppedAllSlot && isStartedFinalSlotRoll)"
             >
                 <p class="text-white">REPLAY</p>
             </button>
