@@ -5,7 +5,7 @@ import SlotMachineVue from './components/slot-machine/SlotMachine.vue'
 </script>
 
 <template>
-    <div class="flex flex-col">
+    <div>
         <header>
             <HeaderVue></HeaderVue>
         </header>
