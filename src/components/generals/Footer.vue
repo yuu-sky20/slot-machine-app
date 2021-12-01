@@ -1,6 +1,6 @@
 <template>
     <div class="flex justify-center fixed bottom-0 container flex-col bg-blue-400 mx-0 mt-4">
-        <div class="box-content flex justify-center mt-1">
+        <div class="box-content flex justify-center m-1">
             <a class="text-white text-center text-base font-semibold" href="https://github.com/yuu-sky20/slot-machine-app">Github</a>
         </div>
         <div class="box-content">
