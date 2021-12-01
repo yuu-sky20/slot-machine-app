@@ -20,10 +20,11 @@ type SlotTurnSpeed = {
     middleSpeed: number,
     rightSpeed: number
 }
+const ROLL_SPEED = 300
 // スロットの回転速度を乱数で生成
 function GenerateRandSlotRollSpeed(): number {
     // 難易度変更を実装する際はここの値変えてみる？
-    const rand = (Math.floor(Math.random() * 100)) + 300
+    const rand = (Math.floor(Math.random() * 100)) + ROLL_SPEED
     console.log(rand)
     return rand
 }
@@ -139,16 +140,19 @@ function StartTurnSlot() {
 StartTurnSlot()
 
 const handleStopLeftSlot = () => {
+    if(!isStoppedLeftSlot.value) return
     clearInterval(leftSlotIntervalID)
     isStoppedLeftSlot.value = true
     isSlotReachNow.value = gameManager.judgeSlotHorizontalLine(leftSlotItems.middle)
 }
 const handleStopMiddleSlot = () => {
+    if(!isStoppedMiddleSlot.value) return
     clearInterval(middleSlotIntervalID)
     isStoppedMiddleSlot.value = true
     isSlotReachNow.value = gameManager.judgeSlotHorizontalLine(middleSlotItems.middle)
 }
 const handleStopRightSlot = () => {
+    if(!isStoppedRightSlot.value) return
     clearInterval(rightSlotIntervalID)
     isStoppedRightSlot.value = true
     isSlotReachNow.value = gameManager.judgeSlotHorizontalLine(rightSlotItems.middle)
