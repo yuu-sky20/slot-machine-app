@@ -1,5 +1,5 @@
 <template>
-    <div class="flex justify-center bottom-0 absolute container flex-col bg-blue-400 mx-0 mt-4 py-1">
+    <div class="flex justify-center relative container flex-col bg-blue-400 mx-0 mt-4 py-1">
         <div class="box-content flex justify-center">
             <a class="text-white text-center text-base font-semibold" href="https://github.com/yuu-sky20/slot-machine-app">Github</a>
         </div>
