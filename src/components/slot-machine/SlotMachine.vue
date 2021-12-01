@@ -187,6 +187,11 @@ const handleResetTurnSlot = () => {
 
 <template>
     <div class="flex flex-col mx-0">
+        <div class="flex justify-center container">
+            <div class="text-center">
+                <p>PLAY COUNT: {{gamePlayCount}}</p>
+            </div>
+        </div>
         <div class="flex flex-wrap justify-center my-3 container">
             <div class="flex flex-col">
                 <SlotVue key="left-slot" :indexes="leftSlotItems"></SlotVue>
@@ -236,9 +241,6 @@ const handleResetTurnSlot = () => {
             </button>
         </div>
         <div class="flex flex-col justify-center my-3 container">
-            <div class="text-center">
-                <p>PLAY COUNT: {{gamePlayCount}}</p>
-            </div>
             <div class="text-center">
                 <p v-if="isGameCleared">BIG!!!</p>
             </div>
