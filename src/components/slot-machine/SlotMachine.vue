@@ -182,6 +182,9 @@ const handleResetTurnSlot = () => {
         isStartedFinalSlotRoll.value = false
         isSlotReachNow.value = false
         isGameCleared.value = false
+        isLeftStopChecked.value = false
+        isMiddleStopChecked.value = false
+        isRightStopChecked.value = false
         gameManager.resetGame()
         // 難易度変更された時のために乱数を再度生成
         slotTurnSpeed.leftSpeed = GenerateRandSlotRollSpeed()
@@ -195,6 +198,11 @@ const handleResetTurnSlot = () => {
 type DifficultyNames = keyof typeof RollSpeedByDifficulties
 const currentDifficulty = ref<DifficultyNames>("NORMAL")
 watch(currentDifficulty, () => BASE_ROLL_SPEED.value = RollSpeedByDifficulties[currentDifficulty.value])
+
+
+const isLeftStopChecked = ref(false)
+const isMiddleStopChecked = ref(false)
+const isRightStopChecked = ref(false)
 
 </script>
 
@@ -221,39 +229,57 @@ watch(currentDifficulty, () => BASE_ROLL_SPEED.value = RollSpeedByDifficulties[c
         <div class="flex flex-wrap justify-center my-2 container">
             <div class="flex flex-col">
                 <SlotVue key="left-slot" :indexes="leftSlotItems"></SlotVue>
-                <button
-                    class="text-center border-2 mx-2 mt-6 mb-3 rounded-lg"
+                <label
+                    class="text-center border-2 mx-2 mt-6 mb-3 rounded-lg transition transform hover:bg-yellow-100 hover:border-yellow-200"
+                    :class="{ 'translate-y-2': isLeftStopChecked, 'bg-yellow-100': isLeftStopChecked, 'border-yellow-200': isLeftStopChecked}"
                     key="stop-left-slot"
-                    v-on:click="handleStopLeftSlot"
                     v-if="isStartedFinalSlotRoll"
-                    :disabled="isStoppedLeftSlot && !isStartedFinalSlotRoll"
                 >
+                    <input
+                        class="hidden"
+                        type="checkbox"
+                        v-on:click="handleStopLeftSlot"
+                        v-model="isLeftStopChecked"
+                        :disabled="(isStoppedLeftSlot && !isStartedFinalSlotRoll) || (isLeftStopChecked)"
+                    >
                     <p>Stop</p>
-                </button>
+                </label>
             </div>
             <div class="flex flex-col">
                 <SlotVue key="middle-slot" :indexes="middleSlotItems"></SlotVue>
-                <button
-                    class="text-center border-2 mx-2 mt-6 mb-3 rounded-lg"
+                <label
+                    class="text-center border-2 mx-2 mt-6 mb-3 rounded-lg transition transform hover:bg-yellow-100 hover:border-yellow-200"
+                    :class="{ 'translate-y-2': isMiddleStopChecked, 'bg-yellow-100': isMiddleStopChecked, 'border-yellow-200': isMiddleStopChecked}"
                     key="stop-middle-slot"
-                    v-on:click="handleStopMiddleSlot"
                     v-if="isStartedFinalSlotRoll"
-                    :disabled="isStoppedMiddleSlot && !isStartedFinalSlotRoll"
                 >
+                    <input
+                        class="hidden"
+                        type="checkbox"
+                        v-on:click="handleStopMiddleSlot"
+                        v-model="isMiddleStopChecked"
+                        :disabled="(isStoppedMiddleSlot && !isStartedFinalSlotRoll) || (isMiddleStopChecked)"
+                    >
                     <p>Stop</p>
-                </button>
+                </label>
             </div>
             <div class="flex flex-col">
                 <SlotVue key="right-slot" :indexes="rightSlotItems"></SlotVue>
-                <button
-                    class="text-center border-2 mx-2 mt-6 mb-3 rounded-lg"
+                <label
+                    class="text-center border-2 mx-2 mt-6 mb-3 rounded-lg transition transform hover:bg-yellow-100 hover:border-yellow-200"
+                    :class="{ 'translate-y-2': isRightStopChecked, 'bg-yellow-100': isRightStopChecked, 'border-yellow-200': isRightStopChecked}"
                     key="stop-right-slot"
-                    v-on:click="handleStopRightSlot"
                     v-if="isStartedFinalSlotRoll"
-                    :disabled="isStoppedRightSlot && !isStartedFinalSlotRoll"
                 >
+                    <input
+                        class="hidden"
+                        type="checkbox"
+                        v-on:click="handleStopRightSlot"
+                        v-model="isRightStopChecked"
+                        :disabled="(isStoppedRightSlot && !isStartedFinalSlotRoll) || (isRightStopChecked)"
+                    >
                     <p>Stop</p>
-                </button>
+                </label>
             </div>
         </div>
         <div class="flex flex-col justify-center my-2 container">
