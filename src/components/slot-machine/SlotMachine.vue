@@ -11,6 +11,7 @@ import { watch } from '@vue/runtime-core'
 const gameManager = new GameManager()
 
 const gamePlayCount = ref(0)
+const bigCount = ref(0)
 const isSlotReachNow = ref(false)
 const isGameCleared = ref(false)
 const isOnceCalledReset = ref(false)
@@ -166,6 +167,9 @@ watch(isStoppedAllSlot, isStoppedAllSlot => {
         isGameCleared.value = gameManager.isGameCleared()
     }
 })
+watch(isGameCleared, (isBig) => {
+    if(isBig) bigCount.value++ 
+})
 
 /**
  * UI制御用のフラグ変数とゲーム設定を初期化する
@@ -198,6 +202,7 @@ watch(currentDifficulty, () => BASE_ROLL_SPEED.value = RollSpeedByDifficulties[c
         <div class="flex justify-center container">
             <div class="text-center">
                 <p>PLAY COUNT: {{gamePlayCount}}</p>
+                <p>BIG COUNT: {{bigCount}}</p>
             </div>
         </div>
         <div class="flex justify-center my-3 container">
