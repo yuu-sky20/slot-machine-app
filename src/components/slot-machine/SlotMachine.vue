@@ -216,7 +216,7 @@ const isRightStopChecked = ref(false)
         </div>
         <div class="flex justify-center my-3 container">
             <select
-                class="focus:outline-none focus:ring bg-green-100 px-3 py-1 border-green-200 border-2 rounded-2xl"
+                class="focus:outline-none focus:ring bg-green-100 px-3 py-1 border-green-200 border-2 rounded-2xl hover:bg-green-200 hover:border-green-400"
                 :disabled="!(isStoppedAllSlot && isStartedFinalSlotRoll)"
                 v-model="currentDifficulty"
             >
@@ -300,9 +300,9 @@ const isRightStopChecked = ref(false)
                 >reach now!</p>
             </div>
         </div>
-        <div class="flex justify-center my-3 container">
+        <div class="flex justify-center my-5 container">
             <button
-                class="text-center border-4 px-10 py-2 bg-red-400 border-red-100"
+                class="text-center border-4 px-10 py-2 bg-red-400 border-red-100 hover:bg-red-500 hover:border-red-300"
                 v-on:click="handleResetTurnSlot"
                 v-if="isStoppedAllSlot && isStartedFinalSlotRoll"
                 :disabled="!(isStoppedAllSlot && isStartedFinalSlotRoll)"
