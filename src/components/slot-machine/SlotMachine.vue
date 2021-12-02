@@ -167,6 +167,7 @@ watch(isStoppedAllSlot, isStoppedAllSlot => {
         isGameCleared.value = gameManager.isGameCleared()
     }
 })
+// BIGした回数を記録
 watch(isGameCleared, (isBig) => {
     if(isBig) bigCount.value++ 
 })
