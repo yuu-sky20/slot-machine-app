@@ -288,6 +288,10 @@ const isRightStopChecked = ref(false)
                     v-if="isGameCleared"
                     class="font-black text-4xl font-serif tracking-widest"
                 >BIG!</p>
+                <p
+                    v-else-if="isStoppedAllSlot && isStartedFinalSlotRoll"
+                    class="font-black text-2xl font-serif tracking-wide"
+                >FAILED...</p>
             </div>
             <div class="text-center">
                 <p
