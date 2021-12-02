@@ -4,7 +4,7 @@ import GenerateRandIndexes from './utils/GenerateRandIndexes'
 import GameManager from './utils/SlotMachineGameManager'
 import LinkedList from './utils/LinkedList'
 import emojiItems from '../../const/emojiItems'
-import Difficulty from '../../const/baseRollSpeeds'
+import RollSpeedByDifficulties from '../../const/rollSpeedByDifficulties'
 import { reactive, ref, computed } from '@vue/reactivity'
 import { watch } from '@vue/runtime-core'
 
@@ -22,27 +22,22 @@ type SlotTurnSpeed = {
     middleSpeed: number,
     rightSpeed: number
 }
-const ROLL_SPEED = 300
+
+const ROLL_SPEED = ref(300)
+
 // スロットの回転速度を乱数で生成
 function GenerateRandSlotRollSpeed(): number {
     // 難易度変更を実装する際はここの値変えてみる？
-    const rand = (Math.floor(Math.random() * 100)) + ROLL_SPEED
+    const rand = (Math.floor(Math.random() * 100)) + ROLL_SPEED.value
     console.log(rand)
     return rand
 }
-// 初回描画時と初期化時（ゲームリセット時）にのみ実行
-function SetSlotTurnSpeed(): SlotTurnSpeed{
-    const leftSpeed = GenerateRandSlotRollSpeed()
-    const middleSpeed = GenerateRandSlotRollSpeed()
-    const rightSpeed = GenerateRandSlotRollSpeed()
-    return {
-        leftSpeed: leftSpeed,
-        middleSpeed: middleSpeed,
-        rightSpeed: rightSpeed
-    }
-}
 // 各スロットの回転速度
-const slotTurnSpeed: SlotTurnSpeed = reactive(SetSlotTurnSpeed())
+const slotTurnSpeed = reactive<SlotTurnSpeed>({
+    leftSpeed: GenerateRandSlotRollSpeed(),
+    middleSpeed: GenerateRandSlotRollSpeed(),
+    rightSpeed: GenerateRandSlotRollSpeed()
+})
 
 // 各スロットアイテムのアイテムを連結リストで管理
 const leftSlotLinkedList = new LinkedList()
@@ -178,10 +173,17 @@ const handleResetTurnSlot = () => {
         isSlotReachNow.value = false
         isGameCleared.value = false
         gameManager.resetGame()
+        // 難易度変更された時のために乱数を再度生成
+        slotTurnSpeed.leftSpeed = GenerateRandSlotRollSpeed()
+        slotTurnSpeed.middleSpeed = GenerateRandSlotRollSpeed()
+        slotTurnSpeed.rightSpeed = GenerateRandSlotRollSpeed()
         StartTurnSlot()
     }
 }
 
+type DifficultyNames = keyof typeof RollSpeedByDifficulties
+const currentDifficulty = ref<DifficultyNames>("NORMAL")
+watch(currentDifficulty, () => ROLL_SPEED.value = RollSpeedByDifficulties[currentDifficulty.value])
 
 </script>
 
@@ -194,10 +196,14 @@ const handleResetTurnSlot = () => {
         </div>
         <div class="flex justify-center my-3 container">
             <select
-                class="text-center focus:outline-none focus:ring"
+                class="focus:outline-none focus:ring bg-green-100 px-3 py-1 border-green-200 border-2 rounded-2xl"
                 :disabled="!(isStoppedAllSlot && isStartedFinalSlotRoll)"
+                v-model="currentDifficulty"
             >
-                <option v-for="(_, difficulty) in Difficulty">{{difficulty}}</option>
+                <option
+                    v-for="(_, difficulty) in RollSpeedByDifficulties"
+                    class="text-center"    
+                >{{difficulty}}</option>
             </select>
         </div>
         <div class="flex flex-wrap justify-center my-2 container">
@@ -242,14 +248,14 @@ const handleResetTurnSlot = () => {
             <div class="text-center">
                 <p
                     v-if="isGameCleared"
-                    class="font-black text-4xl font-serif"
+                    class="font-black text-4xl font-serif tracking-widest"
                 >BIG!</p>
             </div>
             <div class="text-center">
                 <p
                     v-if="isSlotReachNow"
-                    class="font-light text-3xl font-serif"
-                >Reach!</p>
+                    class="font-light text-3xl font-serif tracking-wide"
+                >reach now!</p>
             </div>
         </div>
         <div class="flex justify-center my-3 container">
