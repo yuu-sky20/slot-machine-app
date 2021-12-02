@@ -56,7 +56,7 @@ export default class LinkedList {
         ]
     }
     /**
-     * 次の要素を選択する。既に最後列に到達していた場合は、先頭を選択する。
+     * 次の要素を選択する。既に最後列に到達していた場合は、先頭を選択する。(リストを巡回させる)
      */
     public next(): void {
         if(this.currentNode?.next) this.currentNode = this.currentNode?.next

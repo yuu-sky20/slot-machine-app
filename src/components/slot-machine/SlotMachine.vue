@@ -15,22 +15,20 @@ const isSlotReachNow = ref(false)
 const isGameCleared = ref(false)
 const isOnceCalledReset = ref(false)
 const isStartedFinalSlotRoll = ref(false)
+const BASE_ROLL_SPEED = ref(300)
 
-// 3つのスロットの回転速度を一元管理するための型
+/**
+ * スロットのランダムな回転速度を生成
+ * @returns 難易度選択により上限値が制御された回転速度の乱数
+*/
+function GenerateRandSlotRollSpeed(): number {
+    return (Math.floor(Math.random() * 100)) + BASE_ROLL_SPEED.value
+}
+
 type SlotTurnSpeed = {
     leftSpeed: number,
     middleSpeed: number,
     rightSpeed: number
-}
-
-const ROLL_SPEED = ref(300)
-
-// スロットの回転速度を乱数で生成
-function GenerateRandSlotRollSpeed(): number {
-    // 難易度変更を実装する際はここの値変えてみる？
-    const rand = (Math.floor(Math.random() * 100)) + ROLL_SPEED.value
-    console.log(rand)
-    return rand
 }
 // 各スロットの回転速度
 const slotTurnSpeed = reactive<SlotTurnSpeed>({
@@ -39,7 +37,7 @@ const slotTurnSpeed = reactive<SlotTurnSpeed>({
     rightSpeed: GenerateRandSlotRollSpeed()
 })
 
-// 各スロットアイテムのアイテムを連結リストで管理
+// 各スロットのアイテムの中身(emojiItems[]の添字番号)を連結リストで管理
 const leftSlotLinkedList = new LinkedList()
 const middleSlotLinkedList = new LinkedList()
 const rightSlotLinkedList = new LinkedList()
@@ -51,7 +49,7 @@ randIndexes.forEach(index => middleSlotLinkedList.push(index))
 randIndexes = GenerateRandIndexes(emojiItems.length)
 randIndexes.forEach(index => rightSlotLinkedList.push(index))
 
-// 縦スロットの各アイテムを一元管理するための型
+// スロット内の3つのアイテムを一元管理するための型
 type SlotItems = {
     top: number,
     middle: number,
@@ -72,14 +70,14 @@ function InitializeSlotItems(values: number[]): SlotItems {
     return slotItems
 }
 
-// 各スロットアイテムの変数の初期化
-const initializedLeftSlotValues = leftSlotLinkedList.getThreeConsecutivedNum().reverse()
-const initializedMiddleSlotValues = middleSlotLinkedList.getThreeConsecutivedNum().reverse()
-const initializedRightSlotValues = rightSlotLinkedList.getThreeConsecutivedNum().reverse()
-
-const leftSlotItems = reactive(InitializeSlotItems(initializedLeftSlotValues))
-const middleSlotItems = reactive(InitializeSlotItems(initializedMiddleSlotValues))
-const rightSlotItems = reactive(InitializeSlotItems(initializedRightSlotValues))
+// UI上で描画するスロット内の3つのアイテムの中身をSlotItems型の可変変数で管理する
+// ここの行では初期値を代入している
+const leftSlotItems
+    = reactive(InitializeSlotItems(leftSlotLinkedList.getThreeConsecutivedNum().reverse()))
+const middleSlotItems
+    = reactive(InitializeSlotItems(middleSlotLinkedList.getThreeConsecutivedNum().reverse()))
+const rightSlotItems
+    = reactive(InitializeSlotItems(rightSlotLinkedList.getThreeConsecutivedNum().reverse()))
 
 /**
  * slotItems型のmutable変数の各プロパティに数値を設定する
@@ -107,30 +105,30 @@ const isStoppedRightSlot = ref(false)
  */
 function StartTurnSlot() {
     const BASE_WAIT_TIME = 1200
+    // 左スロット
     setTimeout(() => {
         leftSlotIntervalID = setInterval(() => {
             leftSlotLinkedList.next()
-            const values = leftSlotLinkedList.getThreeConsecutivedNum().reverse()
-            SetSlotItems(leftSlotItems, values)
+            SetSlotItems(leftSlotItems, leftSlotLinkedList.getThreeConsecutivedNum().reverse())
         }, slotTurnSpeed.leftSpeed)
         isStoppedLeftSlot.value = false
     }, BASE_WAIT_TIME * 1)
+    // 中央スロット
     setTimeout(() => {
         middleSlotIntervalID = setInterval(() => {
             middleSlotLinkedList.next()
-            const values = middleSlotLinkedList.getThreeConsecutivedNum().reverse()
-            SetSlotItems(middleSlotItems, values)
+            SetSlotItems(middleSlotItems, middleSlotLinkedList.getThreeConsecutivedNum().reverse())
         }, slotTurnSpeed.middleSpeed)
         isStoppedMiddleSlot.value = false
     }, BASE_WAIT_TIME * 2)
+    // 右スロット
     setTimeout(() => {
         rightSlotIntervalID = setInterval(() => {
             rightSlotLinkedList.next()
-            const values = rightSlotLinkedList.getThreeConsecutivedNum().reverse()
-            SetSlotItems(rightSlotItems, values)
+            SetSlotItems(rightSlotItems, rightSlotLinkedList.getThreeConsecutivedNum().reverse())
         }, slotTurnSpeed.rightSpeed)
         isStoppedRightSlot.value = false
-        // 反映を少し遅らせる
+        // 演出のために反映を少し遅らせる
         setTimeout(() => 
             isStartedFinalSlotRoll.value = true
         , 1000)
@@ -138,8 +136,10 @@ function StartTurnSlot() {
     gamePlayCount.value++
 }
 
+// 初回レンダリング時、スロットを回す処理を行う
 StartTurnSlot()
 
+// 各ストップボタンが押された時に、対応するスロットの回転を止める処理
 const handleStopLeftSlot = () => {
     clearInterval(leftSlotIntervalID)
     isStoppedLeftSlot.value = true
@@ -155,16 +155,21 @@ const handleStopRightSlot = () => {
     isStoppedRightSlot.value = true
     isSlotReachNow.value = gameManager.judgeSlotHorizontalLine(rightSlotItems.middle)
 }
-
+// 全てのスロットが止まったことを検知する
 const isStoppedAllSlot = computed(() => {
     return isStoppedLeftSlot.value && isStoppedMiddleSlot.value && isStoppedRightSlot.value
 })
+// ゲーム終了時に実行する処理
 watch(isStoppedAllSlot, isStoppedAllSlot => {
     if(isStoppedAllSlot) {
         isOnceCalledReset.value = false
         isGameCleared.value = gameManager.isGameCleared()
     }
 })
+
+/**
+ * UI制御用のフラグ変数とゲーム設定を初期化する
+*/
 const handleResetTurnSlot = () => {
     if(isOnceCalledReset.value) return
     else if(isStoppedAllSlot) {
@@ -181,9 +186,10 @@ const handleResetTurnSlot = () => {
     }
 }
 
+// ゲーム難易度に関する設定
 type DifficultyNames = keyof typeof RollSpeedByDifficulties
 const currentDifficulty = ref<DifficultyNames>("NORMAL")
-watch(currentDifficulty, () => ROLL_SPEED.value = RollSpeedByDifficulties[currentDifficulty.value])
+watch(currentDifficulty, () => BASE_ROLL_SPEED.value = RollSpeedByDifficulties[currentDifficulty.value])
 
 </script>
 
