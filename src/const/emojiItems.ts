@@ -1,4 +1,3 @@
-// 777の7はゲーム難易度問わず必ず入れたいからここの配列には入れずに乱数生成時に一番大きい数を番兵にして扱った方がいいかも
 import emoji from "node-emoji"
 const emojiItems: string[] = [
     emoji.get('coffee'),

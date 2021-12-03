@@ -56,7 +56,6 @@ describe("正常にゲームリセットされるかどうか", () => {
         gameManager.judgeSlotHorizontalLine(2)
         gameManager.resetGame()
         expect(gameManager.isGameCleared()).toBeTruthy()
-        expect(gameManager.getGamePlayCount()).toBe(1)
     })
     it("ゲームリセットされる2", () => {
         const gameManager = new GameManager()
@@ -64,22 +63,61 @@ describe("正常にゲームリセットされるかどうか", () => {
         gameManager.judgeSlotHorizontalLine(6)
         gameManager.judgeSlotHorizontalLine(6)
         gameManager.resetGame()
+        expect(gameManager.isGameCleared()).toBeTruthy()
         gameManager.judgeSlotHorizontalLine(10)
         gameManager.judgeSlotHorizontalLine(10)
         gameManager.judgeSlotHorizontalLine(6)
         expect(gameManager.isGameCleared()).toBeFalsy()
-        expect(gameManager.getGamePlayCount()).toBe(2)
     })
 })
-describe("judgeSlotHorizontalLine()の引数indexNumの境界値テスト", () => {
-    it("indexNumは小数を含まない", () => {
+describe("リーチ状態を正常に検出するかどうか", () => {
+    it("検出する1", () => {
         const gameManager = new GameManager()
-        expect(() => gameManager.judgeSlotHorizontalLine(3.9)).toThrow("indexNumには必ず自然数を入力してください")
-        expect(() => gameManager.judgeSlotHorizontalLine(12.7834)).toThrow("indexNumには必ず自然数を入力してください")
+        expect(gameManager.judgeSlotHorizontalLine(30)).toBeFalsy()
+        expect(gameManager.judgeSlotHorizontalLine(30)).toBeTruthy()
+        expect(gameManager.judgeSlotHorizontalLine(30)).toBeFalsy()
     })
-    it("indexNumは負数を含まない", () => {
+    it("検出する2", () => {
         const gameManager = new GameManager()
-        expect(() => gameManager.judgeSlotHorizontalLine(-1)).toThrow("indexNumには必ず自然数を入力してください")
-        expect(() => gameManager.judgeSlotHorizontalLine(-125)).toThrow("indexNumには必ず自然数を入力してください")
+        expect(gameManager.judgeSlotHorizontalLine(63)).toBeFalsy()
+        expect(gameManager.judgeSlotHorizontalLine(63)).toBeTruthy()
+        expect(gameManager.judgeSlotHorizontalLine(63)).toBeFalsy()
+        gameManager.resetGame()
+        expect(gameManager.judgeSlotHorizontalLine(91)).toBeFalsy()
+        expect(gameManager.judgeSlotHorizontalLine(91)).toBeTruthy()
+        expect(gameManager.judgeSlotHorizontalLine(91)).toBeFalsy()
+    })
+    it("検出しない1", () => {
+        const gameManager = new GameManager()
+        expect(gameManager.judgeSlotHorizontalLine(21)).toBeFalsy()
+        expect(gameManager.judgeSlotHorizontalLine(53)).toBeFalsy()
+        expect(gameManager.judgeSlotHorizontalLine(21)).toBeFalsy()
+    })
+    it("検出しない2", () => {
+        const gameManager = new GameManager()
+        expect(gameManager.judgeSlotHorizontalLine(76)).toBeFalsy()
+        expect(gameManager.judgeSlotHorizontalLine(51)).toBeFalsy()
+        expect(gameManager.judgeSlotHorizontalLine(0)).toBeFalsy()
+        gameManager.resetGame()
+        expect(gameManager.judgeSlotHorizontalLine(2)).toBeFalsy()
+        expect(gameManager.judgeSlotHorizontalLine(3)).toBeFalsy()
+        expect(gameManager.judgeSlotHorizontalLine(5)).toBeFalsy()
+    })
+})
+describe("judgeSlotHorizontalLine()引数の境界値テスト", () => {
+    it("小数を含まない", () => {
+        const gameManager = new GameManager()
+        expect(() => gameManager.judgeSlotHorizontalLine(3.9)).toThrow("引数には必ず自然数を入力してください")
+        expect(() => gameManager.judgeSlotHorizontalLine(12.7834)).toThrow("引数には必ず自然数を入力してください")
+    })
+    it("負数を含まない", () => {
+        const gameManager = new GameManager()
+        expect(() => gameManager.judgeSlotHorizontalLine(-1)).toThrow("引数には必ず自然数を入力してください")
+        expect(() => gameManager.judgeSlotHorizontalLine(-125)).toThrow("引数には必ず自然数を入力してください")
+    })
+    it("小数の負数を含まない", () => {
+        const gameManager = new GameManager()
+        expect(() => gameManager.judgeSlotHorizontalLine(-9.7)).toThrow("引数には必ず自然数を入力してください")
+        expect(() => gameManager.judgeSlotHorizontalLine(-13942.719526)).toThrow("引数には必ず自然数を入力してください")
     })
 })
