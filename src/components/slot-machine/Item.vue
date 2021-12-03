@@ -9,7 +9,7 @@ const props = defineProps<Props>()
 <template>
     <div class="px-2">
         <div class="box-border text-center">
-            <p class="text-5xl">{{emojiItems[index]}}</p>
+            <p class="text-5xl select-none">{{emojiItems[index]}}</p>
         </div>
     </div>
 </template>

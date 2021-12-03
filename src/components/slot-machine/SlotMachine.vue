@@ -244,7 +244,7 @@ StartTurnSlot()
                         v-model="isStoppedLeftSlot"
                         :disabled="(isStoppedLeftSlot && !isStartedFinalSlotRoll) || (isStoppedLeftSlot)"
                     >
-                    <p>Stop</p>
+                    <p class="select-none">Stop</p>
                 </label>
             </div>
             <div class="flex flex-col">
@@ -262,7 +262,7 @@ StartTurnSlot()
                         v-model="isStoppedMiddleSlot"
                         :disabled="(isStoppedMiddleSlot && !isStartedFinalSlotRoll) || (isStoppedMiddleSlot)"
                     >
-                    <p>Stop</p>
+                    <p class="select-none">Stop</p>
                 </label>
             </div>
             <div class="flex flex-col">
@@ -280,7 +280,7 @@ StartTurnSlot()
                         v-model="isStoppedRightSlot"
                         :disabled="(isStoppedRightSlot && !isStartedFinalSlotRoll) || (isStoppedRightSlot)"
                     >
-                    <p>Stop</p>
+                    <p class="select-none">Stop</p>
                 </label>
             </div>
         </div>
@@ -309,7 +309,7 @@ StartTurnSlot()
                 v-if="isStoppedAllSlot && isStartedFinalSlotRoll"
                 :disabled="!(isStoppedAllSlot && isStartedFinalSlotRoll)"
             >
-                <p class="text-white">REPLAY</p>
+                <p class="text-white select-none">REPLAY</p>
             </button>
         </div>
     </div>
