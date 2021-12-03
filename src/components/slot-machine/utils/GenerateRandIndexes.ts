@@ -5,7 +5,7 @@
  * @returns 配列へのランダムなアクセス順をnumber[]で返す
  */
 export default function GenerateRandIndexes(length: number): number[] {
-    if(!Number.isInteger(length) || Math.sign(length) === -1 || Math.sign(length) === 0) throw new TypeError("lengthには必ず0以上の整数値を入力してください")
+    if(!Number.isInteger(length) || Math.sign(length) === -1 || Math.sign(length) === 0) throw new TypeError("lengthには必ず1以上の整数値を入力してください")
     const arrayNum: number[] = new Array(length)
     for (let i = 0; i < length; i++){
         arrayNum[i] = i
