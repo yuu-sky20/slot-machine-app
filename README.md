@@ -4,6 +4,5 @@
 ## What's this ?
 - Webアプリ上で擬似パチスロができる
 - 難易度変更(スロットの回転速度の変更)が可能
-- 3つとも揃うと、その絵文字が画面全体に右上から左下にかけて雨のように大量に降ってくる
 ### LICENSE
-- MIT
+- The source code is licensed MIT. The website content is licensed CC BY 4.0, [see LICENSE](https://github.com/yuu-sky20/slot-machine-app/blob/master/LICENSE)
