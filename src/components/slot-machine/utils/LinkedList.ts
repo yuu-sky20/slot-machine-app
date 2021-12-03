@@ -45,7 +45,6 @@ export default class LinkedList {
         return this.currentNode.value
     }
     /**
-     * unsafe
      * @returns 選択されている要素から連続する3つの数値を返す。
      */
     public getThreeConsecutivedNum(): number[] {
