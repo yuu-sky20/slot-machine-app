@@ -199,7 +199,7 @@ type DifficultyNames = keyof typeof RollSpeedByDifficulties
 const currentDifficulty = ref<DifficultyNames>("NORMAL")
 watch(currentDifficulty, () => BASE_ROLL_SPEED.value = RollSpeedByDifficulties[currentDifficulty.value])
 
-
+// Tailwindでinput(checkbox) -> labelにクラスを当てる際に一度きりのbool値を送るための可変変数
 const isLeftStopChecked = ref(false)
 const isMiddleStopChecked = ref(false)
 const isRightStopChecked = ref(false)
