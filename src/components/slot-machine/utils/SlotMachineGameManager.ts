@@ -1,3 +1,4 @@
+import { ArgumentRangeError } from "../../../const/errorCodes"
 /** ゲームのクリア条件に関するデータ、メソッドを提供する */
 export default class GameManager {
     private firstItem: number
@@ -21,7 +22,7 @@ export default class GameManager {
      * @returns 現在のスロットがリーチ状態かどうかboolで返す
      */
     public judgeSlotHorizontalLine(currentSlotMiddleItem: number): boolean {
-        if(!Number.isInteger(currentSlotMiddleItem) || Math.sign(currentSlotMiddleItem) === -1) throw new TypeError("引数には必ず自然数を入力してください")
+        if(!Number.isInteger(currentSlotMiddleItem) || Math.sign(currentSlotMiddleItem) === -1) throw new TypeError(ArgumentRangeError.NotNaturalNumber)
         let isSlotReachNow = false
 
         if (this.slotStoppedCount === 0) this.firstItem = currentSlotMiddleItem

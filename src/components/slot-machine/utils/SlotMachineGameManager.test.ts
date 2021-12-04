@@ -1,4 +1,5 @@
-import GameManager from "./SlotMachineGameManager";
+import GameManager from "./SlotMachineGameManager"
+import { ArgumentRangeError } from "../../../const/errorCodes"
 
 describe("正常にゲームクリアされるか", () => {
     it("ゲームクリアされる1", () => {
@@ -107,17 +108,17 @@ describe("リーチ状態を正常に検出するかどうか", () => {
 describe("judgeSlotHorizontalLine()引数の境界値テスト", () => {
     it("小数を含まない", () => {
         const gameManager = new GameManager()
-        expect(() => gameManager.judgeSlotHorizontalLine(3.9)).toThrow("引数には必ず自然数を入力してください")
-        expect(() => gameManager.judgeSlotHorizontalLine(12.7834)).toThrow("引数には必ず自然数を入力してください")
+        expect(() => gameManager.judgeSlotHorizontalLine(3.9)).toThrow(ArgumentRangeError.NotNaturalNumber)
+        expect(() => gameManager.judgeSlotHorizontalLine(12.7834)).toThrow(ArgumentRangeError.NotNaturalNumber)
     })
     it("負数を含まない", () => {
         const gameManager = new GameManager()
-        expect(() => gameManager.judgeSlotHorizontalLine(-1)).toThrow("引数には必ず自然数を入力してください")
-        expect(() => gameManager.judgeSlotHorizontalLine(-125)).toThrow("引数には必ず自然数を入力してください")
+        expect(() => gameManager.judgeSlotHorizontalLine(-1)).toThrow(ArgumentRangeError.NotNaturalNumber)
+        expect(() => gameManager.judgeSlotHorizontalLine(-125)).toThrow(ArgumentRangeError.NotNaturalNumber)
     })
     it("小数の負数を含まない", () => {
         const gameManager = new GameManager()
-        expect(() => gameManager.judgeSlotHorizontalLine(-9.7)).toThrow("引数には必ず自然数を入力してください")
-        expect(() => gameManager.judgeSlotHorizontalLine(-13942.719526)).toThrow("引数には必ず自然数を入力してください")
+        expect(() => gameManager.judgeSlotHorizontalLine(-9.7)).toThrow(ArgumentRangeError.NotNaturalNumber)
+        expect(() => gameManager.judgeSlotHorizontalLine(-13942.719526)).toThrow(ArgumentRangeError.NotNaturalNumber)
     })
 })

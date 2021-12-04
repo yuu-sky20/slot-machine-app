@@ -4,7 +4,8 @@ import GenerateRandIndexes from './utils/GenerateRandIndexes'
 import GameManager from './utils/SlotMachineGameManager'
 import LinkedList from './utils/LinkedList'
 import emojiItems from '../../const/emojiItems'
-import RollSpeedByDifficulties from '../../const/rollSpeedByDifficulties'
+import RollSpeedByDifficulties, {DEFAULT_DIFFICULTY_NAME} from '../../const/rollSpeedByDifficulties'
+import {ArgumentRangeError} from '../../const/errorCodes'
 import { reactive, ref, computed } from '@vue/reactivity'
 import { watch } from '@vue/runtime-core'
 
@@ -51,7 +52,7 @@ const rightSlotItems
     = reactive(InitializeItems(rightSlotLinkedList.getThreeConsecutivedNum().reverse()))
 
 /** ユーザーが選択したゲーム難易度 */
-const currentDifficulty = ref<DifficultyNames>("NORMAL")
+const currentDifficulty = ref<DifficultyNames>(DEFAULT_DIFFICULTY_NAME)
 /** currentDifficultyによって再計算された値が入る */
 const BASE_ROLL_SPEED = ref(300)
 // 各スロットの回転速度
@@ -144,7 +145,7 @@ function InitializeSlotLinkedList(linkedList: LinkedList) {
  * @returns items型のオブジェクトを返す
  */
 function InitializeItems(values: number[]): Items {
-    if(values[0] == null || values[1] == null || values[2] == null) throw new RangeError("配列引数valuesには3つの要素が必要です。")
+    if(values[0] == null || values[1] == null || values[2] == null) throw new RangeError(ArgumentRangeError.ThreeElementsMissing)
     const items: Items = {
         top: values[0],
         middle: values[1],
@@ -158,7 +159,7 @@ function InitializeItems(values: number[]): Items {
  * @param values 各プロパティに代入したい数値の配列
  */
 function SetSlotItems(items: Items, values: number[]) {
-    if(values[0] == null || values[1] == null || values[2] == null) throw new RangeError("配列引数valuesには3つの要素が必要です。")
+    if(values[0] == null || values[1] == null || values[2] == null) throw new RangeError(ArgumentRangeError.ThreeElementsMissing)
     items.top = values[0]
     items.middle = values[1]
     items.bottom = values[2]

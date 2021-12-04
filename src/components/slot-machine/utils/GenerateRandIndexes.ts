@@ -1,3 +1,4 @@
+import { ArgumentRangeError } from "../../../const/errorCodes"
 /**
  * 配列へのランダムなアクセス順を生成する
  * 返される数列は必ず0からlength未満の全ての自然数がランダム順で含まれる
@@ -5,7 +6,7 @@
  * @returns 配列へのランダムなアクセス順をnumber[]で返す
  */
 export default function GenerateRandIndexes(length: number): number[] {
-    if(!Number.isInteger(length) || Math.sign(length) === -1 || Math.sign(length) === 0) throw new TypeError("lengthには必ず1以上の整数値を入力してください")
+    if(!Number.isInteger(length) || Math.sign(length) === -1 || Math.sign(length) === 0) throw new TypeError(ArgumentRangeError.NotGreaterThanOne)
     const arrayNum: number[] = new Array(length)
     for (let i = 0; i < length; i++){
         arrayNum[i] = i

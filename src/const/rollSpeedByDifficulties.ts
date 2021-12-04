@@ -1,3 +1,5 @@
+const DEFAULT_DIFFICULTY_NAME = "NORMAL"
+
 const RollSpeedByDifficulties = {
     EASY: 400,
     NORMAL: 300,
@@ -7,3 +9,4 @@ const RollSpeedByDifficulties = {
 } as const
 
 export default RollSpeedByDifficulties
+export {DEFAULT_DIFFICULTY_NAME}

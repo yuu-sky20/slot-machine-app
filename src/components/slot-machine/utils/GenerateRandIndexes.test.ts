@@ -1,4 +1,5 @@
-import GenerateRandIndexes from "./GenerateRandIndexes";
+import GenerateRandIndexes from "./GenerateRandIndexes"
+import {ArgumentRangeError} from "../../../const/errorCodes"
 
 describe('配列が正常に生成されるかどうか', () => {
     it("境界内の数値が使われているかどうか", () => {
@@ -16,14 +17,14 @@ describe('配列が正常に生成されるかどうか', () => {
 
 describe("境界値テスト", () => {
     it("0は含まれない", () => {
-        expect(() => GenerateRandIndexes(0)).toThrow("lengthには必ず1以上の整数値を入力してください")
+        expect(() => GenerateRandIndexes(0)).toThrow(ArgumentRangeError.NotGreaterThanOne)
     })
     it("小数は含まれない", () => {
-        expect(() => GenerateRandIndexes(2.45)).toThrow("lengthには必ず1以上の整数値を入力してください")
-        expect(() => GenerateRandIndexes(3.141592)).toThrow("lengthには必ず1以上の整数値を入力してください")
+        expect(() => GenerateRandIndexes(2.45)).toThrow(ArgumentRangeError.NotGreaterThanOne)
+        expect(() => GenerateRandIndexes(3.141592)).toThrow(ArgumentRangeError.NotGreaterThanOne)
     })
     it("負数は含まれない", () => {
-        expect(() => GenerateRandIndexes(-1)).toThrow("lengthには必ず1以上の整数値を入力してください")
-        expect(() => GenerateRandIndexes(-500)).toThrow("lengthには必ず1以上の整数値を入力してください")
+        expect(() => GenerateRandIndexes(-1)).toThrow(ArgumentRangeError.NotGreaterThanOne)
+        expect(() => GenerateRandIndexes(-500)).toThrow(ArgumentRangeError.NotGreaterThanOne)
     })
 })

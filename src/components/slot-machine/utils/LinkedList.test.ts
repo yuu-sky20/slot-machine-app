@@ -1,18 +1,19 @@
-import LinkedList from "./LinkedList";
+import LinkedList from "./LinkedList"
+import {ArgumentRangeError, LinkedListReferenceError} from "../../../const/errorCodes"
 
 describe("エラーハンドリング", () => {
     it("アイテム未挿入時にpush以外のメソッドを呼び出すとエラーが返される", () => {
         const linkedList = new LinkedList()
-        expect(() => linkedList.next()).toThrow("No items in the LinkedList. please push item first.")
-        expect(() => linkedList.getCurrentNum()).toThrow("No items in the LinkedList. please push item first.")
-        expect(() => linkedList.getThreeConsecutivedNum()).toThrow("No items in the LinkedList. please push item first.")
+        expect(() => linkedList.next()).toThrow(LinkedListReferenceError.ItemDoesNotExit)
+        expect(() => linkedList.getCurrentNum()).toThrow(LinkedListReferenceError.ItemDoesNotExit)
+        expect(() => linkedList.getThreeConsecutivedNum()).toThrow(LinkedListReferenceError.ItemDoesNotExit)
     })
     it("pushできるのは自然数だけ", () => {
         const linkedList = new LinkedList()
-        expect(() => linkedList.push(-1)).toThrow("valueには必ず自然数を入力してください")
-        expect(() => linkedList.push(-54)).toThrow("valueには必ず自然数を入力してください")
-        expect(() => linkedList.push(11.24)).toThrow("valueには必ず自然数を入力してください")
-        expect(() => linkedList.push(-11.24)).toThrow("valueには必ず自然数を入力してください")
+        expect(() => linkedList.push(-1)).toThrow(ArgumentRangeError.NotNaturalNumber)
+        expect(() => linkedList.push(-54)).toThrow(ArgumentRangeError.NotNaturalNumber)
+        expect(() => linkedList.push(11.24)).toThrow(ArgumentRangeError.NotNaturalNumber)
+        expect(() => linkedList.push(-11.24)).toThrow(ArgumentRangeError.NotNaturalNumber)
     })
     it("push一回だけの状態でnextを呼び出すとheadと同じ要素をgetメソッドで返す", () => {
         const val = 6
