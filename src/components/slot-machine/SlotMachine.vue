@@ -230,7 +230,7 @@ StartTurnSlot()
             </select>
         </div>
         <div class="flex flex-wrap justify-center my-2 w-full">
-            <div class="flex flex-col w-35">
+            <div class="flex flex-col w-28">
                 <SlotVue key="left-slot" :indexes="leftSlotItems"></SlotVue>
                 <label
                     class="text-center border-2 mx-2 mt-6 mb-3 rounded-lg transition transform hover:bg-yellow-100 hover:border-yellow-200"
@@ -248,7 +248,7 @@ StartTurnSlot()
                     <p class="select-none">Stop</p>
                 </label>
             </div>
-            <div class="flex flex-col w-35">
+            <div class="flex flex-col w-28">
                 <SlotVue key="middle-slot" :indexes="middleSlotItems"></SlotVue>
                 <label
                     class="text-center border-2 mx-2 mt-6 mb-3 rounded-lg transition transform hover:bg-yellow-100 hover:border-yellow-200"
@@ -266,7 +266,7 @@ StartTurnSlot()
                     <p class="select-none">Stop</p>
                 </label>
             </div>
-            <div class="flex flex-col w-35">
+            <div class="flex flex-col w-28">
                 <SlotVue key="right-slot" :indexes="rightSlotItems"></SlotVue>
                 <label
                     class="text-center border-2 mx-2 mt-6 mb-3 rounded-lg transition transform hover:bg-yellow-100 hover:border-yellow-200"
