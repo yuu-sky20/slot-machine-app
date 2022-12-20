@@ -211,13 +211,13 @@ StartTurnSlot()
 
 <template>
     <div class="flex flex-col mx-0 mb-20 my-10">
-        <div class="flex justify-center container">
+        <div class="flex justify-center w-full">
             <div class="text-center">
                 <p>PLAY COUNT: {{gamePlayCount}}</p>
                 <p>BIG COUNT: {{bigCount}}</p>
             </div>
         </div>
-        <div class="flex justify-center my-3 container">
+        <div class="flex justify-center my-3 w-full">
             <select
                 class="focus:outline-none focus:ring-0 bg-green-100 px-3 py-1 border-green-200 border-2 rounded-2xl hover:bg-green-200 hover:border-green-300"
                 :disabled="!(isStoppedAllSlot && isStartedFinalSlotRoll)"
@@ -229,8 +229,8 @@ StartTurnSlot()
                 >{{difficulty}}</option>
             </select>
         </div>
-        <div class="flex flex-wrap justify-center my-2 container">
-            <div class="flex flex-col">
+        <div class="flex flex-wrap justify-center my-2 w-full">
+            <div class="flex flex-col w-35">
                 <SlotVue key="left-slot" :indexes="leftSlotItems"></SlotVue>
                 <label
                     class="text-center border-2 mx-2 mt-6 mb-3 rounded-lg transition transform hover:bg-yellow-100 hover:border-yellow-200"
@@ -248,7 +248,7 @@ StartTurnSlot()
                     <p class="select-none">Stop</p>
                 </label>
             </div>
-            <div class="flex flex-col">
+            <div class="flex flex-col w-35">
                 <SlotVue key="middle-slot" :indexes="middleSlotItems"></SlotVue>
                 <label
                     class="text-center border-2 mx-2 mt-6 mb-3 rounded-lg transition transform hover:bg-yellow-100 hover:border-yellow-200"
@@ -266,7 +266,7 @@ StartTurnSlot()
                     <p class="select-none">Stop</p>
                 </label>
             </div>
-            <div class="flex flex-col">
+            <div class="flex flex-col w-35">
                 <SlotVue key="right-slot" :indexes="rightSlotItems"></SlotVue>
                 <label
                     class="text-center border-2 mx-2 mt-6 mb-3 rounded-lg transition transform hover:bg-yellow-100 hover:border-yellow-200"
@@ -285,7 +285,7 @@ StartTurnSlot()
                 </label>
             </div>
         </div>
-        <div class="flex flex-col justify-center my-2 container">
+        <div class="flex flex-col justify-center my-2 w-full">
             <div class="text-center">
                 <p
                     v-if="isGameCleared"
@@ -303,7 +303,7 @@ StartTurnSlot()
                 >reach now!</p>
             </div>
         </div>
-        <div class="flex justify-center my-5 container">
+        <div class="flex justify-center my-5 w-full">
             <button
                 class="text-center border-4 px-10 py-2 bg-red-400 border-red-100 hover:bg-red-500 hover:border-red-300"
                 v-on:click="handleResetTurnSlot"
